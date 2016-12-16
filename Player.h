@@ -3,8 +3,10 @@
 
 class Player{
 public:
+	Player();
 	Player(double _x, double _y, int a);
 	void drawPlayer(double x, double y, int a);
+	void update();
 
 	double x;
 	double y;
