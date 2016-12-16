@@ -28,31 +28,14 @@ void Bullet::drawBullet(double _x, double _y, int a){
 	glPopMatrix();
 }
 
-void Bullet::set_curr_player_cord(double _x, double _y){
-	cur_player_x = _x;
-	cur_player_y = _y;
-}
-
-void Bullet::update(){
+void Bullet::update(double _x, double _y){
 	if (active == 1){
 		x -= 10 * sin(angle * M_PI / 180);
 		y += 10 * cos(angle * M_PI / 180);
 	}
-	if (x >= WIDTH_D){
+	if (x >= WIDTH_D || x <= 0 || y >= HEIGHT_D || y <= 0){
 		active = 0;
-		x = WIDTH_D;
-	}
-	if (x <= 0){
-		active = 0;
-		x = 0;
-	}
-	if (y >= HEIGHT_D){
-		active = 0;
-		x = cur_player_x;
-		y = cur_player_y;
-	}
-	if (y <= 0){
-		active = 0;
-		y = 0;
+		x = _x;
+		y = _y;
 	}
 }

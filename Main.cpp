@@ -67,8 +67,11 @@ void Display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	playerObj.drawPlayer(playerObj.x, playerObj.y, playerObj.angle);
-	//bulletObj.set_curr_player_cord(playerObj.x, playerObj.y);
-	bulletObj.drawBullet(playerObj.x, playerObj.y, playerObj.angle);
+	
+	if (bulletObj.active == 0)
+		bulletObj.drawBullet(playerObj.x, playerObj.y, playerObj.angle);
+	else
+		bulletObj.drawBullet(bulletObj.x, bulletObj.y, playerObj.angle);
 
 	/*Debug on screen*/
 	buff = "x: " + LDToStr(bulletObj.x) + "; y: " + LDToStr(bulletObj.y) + "; a: " + LDToStr((double)bulletObj.angle);
@@ -83,7 +86,7 @@ void Display() {
 
 void update(int value){
 	playerObj.update();
-	bulletObj.update();
+	bulletObj.update(playerObj.x, playerObj.y);
 	
 	glutPostRedisplay();
 	glutTimerFunc(33, update, 0);
