@@ -8,5 +8,6 @@ const int HEIGHT_I = 480;
 const int PLAYER_SPEED = 5;
 const int ROTATE_SPEED = 10;
 const int PLAYER_SIZE = 10;
+const int BULLET_SIZE = 3;
 
 #endif // __CONSTS__

@@ -26,11 +26,9 @@ void update(int value);
 void KeyboardMove(int key, int _x, int _y){
 	switch (key){
 		case GLUT_KEY_LEFT:
-			//playerObj.x--;
 			playerObj.angle += ROTATE_SPEED;
 			break;
 		case GLUT_KEY_RIGHT:
-			//playerObj.x++;
 			playerObj.angle -= ROTATE_SPEED;
 			break;
 		case GLUT_KEY_DOWN:
@@ -41,10 +39,18 @@ void KeyboardMove(int key, int _x, int _y){
 			playerObj.x = playerObj.x - PLAYER_SPEED * sin(playerObj.angle * M_PI / 180);
 			playerObj.y = playerObj.y + PLAYER_SPEED * cos(playerObj.angle * M_PI / 180);
 			break;
-		case GLUT_KEY_INSERT:
-			bulletObj.active = 1;
-			break;
 	}
+}
+
+void keyboardListener(unsigned char c, int x, int y) {
+    switch (c) {
+        case 'q':
+            exit(0);
+            break;
+        case ' ':
+        	bulletObj.active = 1;
+        	break;
+    }
 }
 
 void output(GLfloat x, GLfloat y, string text){
@@ -52,6 +58,7 @@ void output(GLfloat x, GLfloat y, string text){
     glTranslatef(x, y, 0);
     glScalef(0.08, 0.08, 0);
     for(int i = 0; i < text.length(); i++){
+		glColor3d(1, 1, 1);
         glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
     }
     glPopMatrix();
@@ -65,13 +72,12 @@ string LDToStr(double one){
 
 void Display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	playerObj.drawPlayer(playerObj.x, playerObj.y, playerObj.angle);
 	
-	if (bulletObj.active == 0)
-		bulletObj.drawBullet(playerObj.x, playerObj.y, playerObj.angle);
-	else
+	if (bulletObj.active == 1)
 		bulletObj.drawBullet(bulletObj.x, bulletObj.y, playerObj.angle);
+	//else
+		//bulletObj.drawBullet(playerObj.x, playerObj.y, playerObj.angle);
 
 	/*Debug on screen*/
 	buff = "x: " + LDToStr(bulletObj.x) + "; y: " + LDToStr(bulletObj.y) + "; a: " + LDToStr((double)bulletObj.angle);
@@ -86,7 +92,7 @@ void Display() {
 
 void update(int value){
 	playerObj.update();
-	bulletObj.update(playerObj.x, playerObj.y);
+	bulletObj.update(playerObj.x, playerObj.y, playerObj.angle);
 	
 	glutPostRedisplay();
 	glutTimerFunc(33, update, 0);
@@ -107,6 +113,7 @@ int main(int argc, char** argv) {
 	glutCreateWindow("Window");
 	Initialize();
 	glutDisplayFunc(Display);
+	glutKeyboardFunc(keyboardListener);
 	glutSpecialFunc(KeyboardMove);
 	glutTimerFunc(33, update, 0);
 	glutMainLoop();

@@ -18,18 +18,18 @@ DrawBresenhamLine dBl;
 
 void Player::drawPlayer(double _x, double _y, int a){
 	//dBl.drawPoint(_x, _y);
-	int pwh = PLAYER_SIZE;
+	int ps = PLAYER_SIZE;
 	glPushMatrix();
 
 	glTranslated(_x, _y, 0);
 	glRotated(a, 0, 0, 1);
-
 	glBegin(GL_LINE_STRIP);
-		glVertex3f(-pwh, -pwh, 0);
-		glVertex3f( 0,    pwh, 0);
-		glVertex3f( pwh, -pwh, 0);
-		glVertex3f(-pwh+10, -pwh+10, 0);
-		glVertex3f(-pwh, -pwh, 0);
+		glColor3d(1, 1, 1);
+		glVertex3f(-ps,    -ps,    0);
+		glVertex3f( 0,      ps,    0);
+		glVertex3f( ps,    -ps,    0);
+		glVertex3f(-ps+ps, -ps+ps, 0);
+		glVertex3f(-ps,    -ps,    0);
 	glEnd();
 
 	glPopMatrix();
