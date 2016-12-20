@@ -6,9 +6,7 @@ public:
 	Bullet();
 	Bullet(double _x, double _y, int a, int _active);
 	void drawBullet(double _x, double _y, int a);
-	void updateCord();
-	void update(double _x, double _y);
-	void set_curr_player_cord(double _x, double _y);
+	void update(double _x, double _y, int a);
 
 	double x;
 	double y;
