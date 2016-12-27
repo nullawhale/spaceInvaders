@@ -4,12 +4,13 @@
 class Bullet{
 public:
 	Bullet();
-	Bullet(double _x, double _y, int a, int _active);
-	void drawBullet(double _x, double _y, int a);
-	void update(double _x, double _y, int a);
+	void drawBullet();
+	void update();
 
 	double x;
 	double y;
+	double dx;
+	double dy;
 	int angle;
 	int active;
 };

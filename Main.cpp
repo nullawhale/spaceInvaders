@@ -14,8 +14,16 @@
 
 using namespace std;
 
-Player playerObj(50, 50, 0);
-Bullet bulletObj(playerObj.x, playerObj.y, playerObj.angle, 0);
+Player player(50, 50, 0);
+Bullet bullets[MAX_BULLET_ON_SCREEN];
+
+typedef struct {
+	int active;
+	double  x, y, dx, dy, bullet_phi;
+}  Bullet1;
+ 
+static int shoot = 0;
+static Bullet1 bullets1[MAX_BULLET_ON_SCREEN];
 
 string buff;
 string sincos_buff;
@@ -26,73 +34,87 @@ void update(int value);
 void KeyboardMove(int key, int _x, int _y){
 	switch (key){
 		case GLUT_KEY_LEFT:
-			playerObj.angle += ROTATE_SPEED;
+			player.angle += ROTATE_SPEED;
 			break;
 		case GLUT_KEY_RIGHT:
-			playerObj.angle -= ROTATE_SPEED;
+			player.angle -= ROTATE_SPEED;
 			break;
 		case GLUT_KEY_DOWN:
-			playerObj.x = playerObj.x + PLAYER_SPEED * sin(playerObj.angle * M_PI / 180);
-			playerObj.y = playerObj.y - PLAYER_SPEED * cos(playerObj.angle * M_PI / 180);
+			player.x = player.x + PLAYER_SPEED * sin(player.angle * M_PI / 180);
+			player.y = player.y - PLAYER_SPEED * cos(player.angle * M_PI / 180);
 			break;
 		case GLUT_KEY_UP:
-			playerObj.x = playerObj.x - PLAYER_SPEED * sin(playerObj.angle * M_PI / 180);
-			playerObj.y = playerObj.y + PLAYER_SPEED * cos(playerObj.angle * M_PI / 180);
+			player.x = player.x - PLAYER_SPEED * sin(player.angle * M_PI / 180);
+			player.y = player.y + PLAYER_SPEED * cos(player.angle * M_PI / 180);
 			break;
 	}
 }
 
 void keyboardListener(unsigned char c, int x, int y) {
-    switch (c) {
-        case 'q':
-            exit(0);
-            break;
-        case ' ':
-        	bulletObj.active = 1;
-        	break;
-    }
+	switch (c) {
+		case 'q':
+			exit(0);
+			break;
+		case ' ':
+			//bullets.active = 1;
+			shoot = 1; //помутнение рассудка
+			break;
+	}
 }
 
 void output(GLfloat x, GLfloat y, string text){
-    glPushMatrix();
-    glTranslatef(x, y, 0);
-    glScalef(0.08, 0.08, 0);
-    for(int i = 0; i < text.length(); i++){
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glScalef(0.08, 0.08, 0);
+	for(int i = 0; i < text.length(); i++){
 		glColor3d(1, 1, 1);
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
-    }
-    glPopMatrix();
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+	}
+	glPopMatrix();
 }
 
 string LDToStr(double one){
-    std::stringstream ss;
-    ss << one;
-    return ss.str();
+	std::stringstream ss;
+	ss << one;
+	return ss.str();
 }
 
 void Display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	playerObj.drawPlayer(playerObj.x, playerObj.y, playerObj.angle);
+	player.drawPlayer(player.x, player.y, player.angle);
 	
-	if (bulletObj.active == 1)
-		bulletObj.drawBullet(bulletObj.x, bulletObj.y, playerObj.angle);
-	//else
-		//bulletObj.drawBullet(playerObj.x, playerObj.y, playerObj.angle);
+	for (int i = 0; i < MAX_BULLET_ON_SCREEN; i++) {
+		if (bullets[i].active) {
+			bullets[i].drawBullet();
+		}
+	}
 
 	/*Debug on screen*/
-	buff = "x: " + LDToStr(bulletObj.x) + "; y: " + LDToStr(bulletObj.y) + "; a: " + LDToStr((double)bulletObj.angle);
-	bullet_buff = "a: " + LDToStr(bulletObj.active)+ "; sin: " + LDToStr((double)sin(bulletObj.angle * 3.14 / 180));
-	bullet_buff += "; cos: " + LDToStr((double)cos(bulletObj.angle * 3.14 / 180));
+	buff = "You looks good today";
 	output(5, HEIGHT_D-10, buff);
-	output(5, HEIGHT_D-25, bullet_buff);
 	/*End debug on screen*/
 
 	glutSwapBuffers();
 }
 
 void update(int value){
-	playerObj.update();
-	bulletObj.update(playerObj.x, playerObj.y, playerObj.angle);
+	player.update();
+
+	if (shoot == 1){
+		for(int i = 0; i < MAX_BULLET_ON_SCREEN; i++) {
+            if(bullets[i].active == 0) {
+                bullets[i].active = 1;
+                bullets[i].x = player.x;
+                bullets[i].y = player.y;
+                bullets[i].angle = player.angle;
+                break;
+            }
+        }
+		shoot = 0;
+	}
+	for (int i = 0; i < MAX_BULLET_ON_SCREEN; i++) {
+		bullets[i].update();
+	}
 	
 	glutPostRedisplay();
 	glutTimerFunc(33, update, 0);
