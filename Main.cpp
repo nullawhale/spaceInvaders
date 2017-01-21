@@ -1,4 +1,5 @@
 #include <iostream>
+#include <locale.h>
 #include <conio.h>
 #include <stdio.h>
 #include <string>
@@ -56,8 +57,7 @@ void keyboardListener(unsigned char c, int x, int y) {
 			exit(0);
 			break;
 		case ' ':
-			//bullets.active = 1;
-			shoot = 1; //помутнение рассудка
+			shoot = 1; //TODO: Optimise bullets
 			break;
 	}
 }
@@ -73,7 +73,7 @@ void output(GLfloat x, GLfloat y, string text){
 	glPopMatrix();
 }
 
-string LDToStr(double one){
+string toStr(double one){
 	std::stringstream ss;
 	ss << one;
 	return ss.str();
@@ -129,10 +129,11 @@ void Initialize() {
 }
 
 int main(int argc, char** argv) {
+	setlocale(LC_ALL, "");
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(WIDTH_D, HEIGHT_D);
-	glutCreateWindow("Window");
+	glutCreateWindow("Lab 2");
 	Initialize();
 	glutDisplayFunc(Display);
 	glutKeyboardFunc(keyboardListener);
@@ -141,3 +142,4 @@ int main(int argc, char** argv) {
 	glutMainLoop();
 	return 0;
 }
+

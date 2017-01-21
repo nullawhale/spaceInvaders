@@ -2,3 +2,8 @@
 *.bat
 *.gch
 *.txt
+*.dev
+*.layout
+*.win
+bin/
+out/
