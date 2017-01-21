@@ -17,7 +17,6 @@ Player::Player(double _x, double _y, int a){
 DrawBresenhamLine dBl;
 
 void Player::drawPlayer(double _x, double _y, int a){
-	//dBl.drawPoint(_x, _y);
 	int ps = PLAYER_SIZE;
 	glPushMatrix();
 
