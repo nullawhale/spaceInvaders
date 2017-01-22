@@ -16,21 +16,39 @@ Player::Player(double _x, double _y, int a){
 
 DrawBresenhamLine dBl;
 
-void Player::drawPlayer(double _x, double _y, int a){
+void Player::drawPlayer(double _x, double _y, int a, int moveing){
 	int ps = PLAYER_SIZE;
-	glPushMatrix();
-
-	glTranslated(_x, _y, 0);
-	glRotated(a, 0, 0, 1);
-	glBegin(GL_LINE_STRIP);
-		glColor3d(1, 1, 1);
-		glVertex3f(-ps,    -ps,    0);
-		glVertex3f( 0,      ps,    0);
-		glVertex3f( ps,    -ps,    0);
-		glVertex3f(-ps+ps, -ps+ps, 0);
-		glVertex3f(-ps,    -ps,    0);
-	glEnd();
-
+	
+	glPushMatrix();	
+	
+	if (moveing){
+		glTranslated(_x, _y, 0);
+		glRotated(a, 0, 0, 1);
+		glBegin(GL_LINE_STRIP);
+			glColor3d(1, 1, 1);
+			glVertex3f(-ps,    -ps,    0);
+			glVertex3f( 0,      ps,    0);
+			glVertex3f( ps,    -ps,    0);
+			glVertex3f(-ps+ps, -ps+ps, 0);
+			glVertex3f(-ps,    -ps,    0);
+			glVertex3f(-ps/2,  -ps/2,  0);
+			glColor3d(1, 0, 0);
+			glVertex3f(0,      -ps*2,    0);
+			glColor3d(1, 1, 1);
+			glVertex3f(ps/2,   -ps/2,  0);
+		glEnd();
+	} else {
+		glTranslated(_x, _y, 0);
+		glRotated(a, 0, 0, 1);
+		glBegin(GL_LINE_STRIP);
+			glColor3d(1, 1, 1);
+			glVertex3f(-ps,    -ps,    0);
+			glVertex3f( 0,      ps,    0);
+			glVertex3f( ps,    -ps,    0);
+			glVertex3f( 0,      0,     0);
+			glVertex3f(-ps,    -ps,    0);
+		glEnd();
+	}
 	glPopMatrix();
 }
 
