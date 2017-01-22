@@ -6,9 +6,9 @@ const double HEIGHT_D = 480.0;
 const int WIDTH_I  = 640;
 const int HEIGHT_I = 480;
 
-const int PLAYER_SPEED = 10;
-const int ROTATE_SPEED = 20;
-const int BULLET_SPEED = 10;
+const int PLAYER_SPEED = 7;
+const int ROTATE_SPEED = 15;
+const int BULLET_SPEED = 20;
 
 const int PLAYER_SIZE = 10;
 const int BULLET_SIZE = 3;
