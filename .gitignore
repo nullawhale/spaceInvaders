@@ -7,3 +7,4 @@
 *.win
 bin/
 out/
+obj/
