@@ -1,1 +1,0 @@
-g++ Main.cpp DrawBresenhamLine.cpp Player.cpp Bullet.cpp -lGL -lglut -lGLEW
