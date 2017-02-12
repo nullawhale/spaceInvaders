@@ -8,6 +8,7 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include <opencv/cv.h>
+#include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
 #include "Asteroid.h"
@@ -115,6 +116,20 @@ void Display() {
 			bullets[i].drawBullet();
 		}
 	}
+
+	GLuint texture;
+	texture = LoadTexture("./map.bmp");
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glPushMatrix();
+	glBegin(GL_QUADS);
+		glTexCoord2d(10.0, 10.0); glVertex2d(10.0, 10.0);
+		glTexCoord2d(10.0, 210.0); glVertex2d(10.0, 210.0);
+		glTexCoord2d(210.0, 210.0); glVertex2d(210.0, 210.0);
+		glTexCoord2d(210.0, 10.0); glVertex2d(210.0, 10.0);
+	glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 	
 	/*Debug on screen*/
 	buff = "player.angle = " + toStr(player.angle);
