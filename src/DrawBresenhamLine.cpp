@@ -9,10 +9,6 @@ using namespace std;
 
 DrawBresenhamLine::DrawBresenhamLine(){}
 
-double DrawBresenhamLine::sign(double x){
-    return (x > 0.0) ? 1.0 : (x < 0.0) ? -1.0 : 0; 
-}
-
 void DrawBresenhamLine::drawPoint(double x, double y){
 	glBegin(GL_POINTS);
         glVertex3f(x, y, 0.0);
@@ -20,44 +16,26 @@ void DrawBresenhamLine::drawPoint(double x, double y){
 }
 
 void DrawBresenhamLine::drawLine(double _x0, double _y0, double _x1, double _y1){
-    int x, y, dx, dy, incx, incy, pdx, pdy, es, el, err;
-    
-    dx = _x1 - _x0;
-    dy = _y1 - _y0;
+    int dx = abs(_x1 - _x0);
+    int sx = _x0 < _x1 ? 1 : -1;
+    int dy = abs(_y1 - _y0);
+    int sy = _y0 < _y1 ? 1 : -1;
+    int err = (dx > dy ? dx : -dy) / 2;
+    int e2;
 
-    incx = sign(dx);
-    incy = sign(dy);
-
-    if (dx < 0) dx = -dx;
-    if (dy < 0) dy = -dy;
-    if (dx > dy){
-        pdx = incx;
-        pdy = 0;
-        es = dy;
-        el = dx;
-    } else {
-        pdx = 0;
-        pdy = incy;
-        es = dx;
-        el = dy;
-    }
-
-    x = _x0;
-    y = _y0;
-    err = el / 2;
-    drawPoint(x, y);
-
-    for (int t = 0; t < el; t++){
-        err -= es;
-        if (err < 0){
-            err += el;
-            x += incx;
-            y += incy;
+    while(true) {
+        drawPoint(_x0, _y0);
+        if (_x0==_x1 && _y0==_y1) {
+            break;
         }
-        else{
-            x += pdx;
-            y += pdy;
+        e2 = err;
+        if (e2 >-dx) {
+            err -= dy;
+            _x0 += sx;
         }
-        drawPoint(x, y);
+        if (e2 < dy) {
+            err += dx;
+            _y0 += sy;
+        }
     }
 }
