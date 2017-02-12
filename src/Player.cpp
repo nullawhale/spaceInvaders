@@ -2,7 +2,7 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include "Player.h"
-#include "DrawBresenhamLine.h"
+#include "DrawBresLine.h"
 #include "MainConst.h"
 
 Player::Player() {}
@@ -13,8 +13,6 @@ Player::Player(double _x, double _y, int a) {
 	angle = a;
 }
 
-DrawBresenhamLine liner;
-
 void Player::drawPlayer() {
 	int ps = PLAYER_SIZE;
 	
@@ -24,14 +22,14 @@ void Player::drawPlayer() {
 	glRotated(angle, 0, 0, 1);
 
 	glColor3d(1, 1, 1);
-	liner.drawLine(-ps, -ps, 0, ps);
-	liner.drawLine(0, ps, ps, -ps);
-	liner.drawLine(ps, -ps, 0, 0);
-	liner.drawLine(0, 0, -ps, -ps);
+	DrawBresLine(-ps, -ps, 0, ps);
+	DrawBresLine(0, ps, ps, -ps);
+	DrawBresLine(ps, -ps, 0, 0);
+	DrawBresLine(0, 0, -ps, -ps);
 	if (moving) {
 		glColor3d(1, 0, 0);
-		liner.drawLine(-ps/2, -ps/2, 0, -ps*2);
-		liner.drawLine(0, -ps*2, ps/2, -ps/2);
+		DrawBresLine(-ps/2, -ps/2, 0, -ps*2);
+		DrawBresLine(0, -ps*2, ps/2, -ps/2);
 	}
 	
 	glPopMatrix();

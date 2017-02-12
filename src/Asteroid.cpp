@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <math.h>
 #include "Asteroid.h"
-#include "DrawBresenhamLine.h"
+#include "DrawBresLine.h"
 #include "MainConst.h"
 
 Asteroid::Asteroid(){}
@@ -13,15 +13,9 @@ void Asteroid::drawAsteroid(){
 	
 	glPushMatrix();
 
-	glTranslated(x, y, 0);
-	glRotated(angle, 0, 0, 1);
-	glBegin(GL_LINE_STRIP);
-		glColor3d(1, 0, 0);
-		glVertex3f(-as,   -as,   0);
-		glVertex3f( 0,     as,   0);
-		glVertex3f( as,   -as,   0);
-		glVertex3f(-as,   -as,   0);
-	glEnd();
+        glColor3d(1, 0, 0);
+        DrawBresLine(-as, -as, 0, as);
+        DrawBresLine(0, as, as, -as);
 
 	glPopMatrix();
 }

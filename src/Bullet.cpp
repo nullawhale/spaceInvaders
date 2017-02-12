@@ -3,12 +3,10 @@
 #include <GL/gl.h>
 #include <math.h>
 #include "Bullet.h"
-#include "DrawBresenhamLine.h"
+#include "DrawBresLine.h"
 #include "MainConst.h"
 
 Bullet::Bullet(){}
-
-DrawBresenhamLine _liner;
 
 void Bullet::drawBullet(){
 	int bs = BULLET_SIZE;
@@ -19,9 +17,9 @@ void Bullet::drawBullet(){
 	glRotated(angle, 0, 0, 1);
 
 	glColor3d(1, 0, 0);
-	_liner.drawLine(-bs, -bs, 0, bs);
-	_liner.drawLine(0, bs, bs, -bs);
-	_liner.drawLine(bs, -bs, -bs, -bs);
+	DrawBresLine(-bs, -bs, 0, bs);
+	DrawBresLine(0, bs, bs, -bs);
+	DrawBresLine(bs, -bs, -bs, -bs);
 
 	glPopMatrix();
 }
