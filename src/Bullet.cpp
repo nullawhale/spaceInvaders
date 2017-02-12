@@ -4,10 +4,11 @@
 #include <math.h>
 #include "Bullet.h"
 #include "DrawBresenhamLine.h"
-#include "Player.h"
 #include "MainConst.h"
 
 Bullet::Bullet(){}
+
+DrawBresenhamLine _liner;
 
 void Bullet::drawBullet(){
 	int bs = BULLET_SIZE;
@@ -16,13 +17,11 @@ void Bullet::drawBullet(){
 
 	glTranslated(x, y, 0);
 	glRotated(angle, 0, 0, 1);
-	glBegin(GL_LINE_STRIP);
-		glColor3d(1, 0, 0);
-		glVertex3f(-bs,   -bs,   0);
-		glVertex3f( 0,     bs,   0);
-		glVertex3f( bs,   -bs,   0);
-		glVertex3f(-bs,   -bs,   0);
-	glEnd();
+
+	glColor3d(1, 0, 0);
+	_liner.drawLine(-bs, -bs, 0, bs);
+	_liner.drawLine(0, bs, bs, -bs);
+	_liner.drawLine(bs, -bs, -bs, -bs);
 
 	glPopMatrix();
 }
