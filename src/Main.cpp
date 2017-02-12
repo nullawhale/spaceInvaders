@@ -169,8 +169,6 @@ void update(int value) {
 }
 
 void Initialize() {
-	//glViewport(0.0, 0.0, WIDTH_D, HEIGHT_D);
-	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, WIDTH_D, 0.0, HEIGHT_D, -5.0, 5.0);
