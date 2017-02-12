@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void DrawBresLine(double _x0, double _y0, double _x1, double _y1){
+void DrawBresLine(double _x0, double _y0, double _x1, double _y1) {
     int dx = abs(_x1 - _x0);
     int sx = _x0 < _x1 ? 1 : -1;
     int dy = abs(_y1 - _y0);
