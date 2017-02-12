@@ -13,7 +13,7 @@ void Asteroid::drawAsteroid(){
 	
 	glPushMatrix();
 
-        glColor3d(1, 0, 0);
+        glColor3f(1.0, 0.0, 0.0);
         DrawBresLine(-as, -as, 0, as);
         DrawBresLine(0, as, as, -as);
 

@@ -21,13 +21,13 @@ void Player::drawPlayer() {
 	glTranslated(x, y, 0);
 	glRotated(angle, 0, 0, 1);
 
-	glColor3d(1, 1, 1);
+	glColor3f(1.0, 1.0, 1.0);
 	DrawBresLine(-ps, -ps, 0, ps);
 	DrawBresLine(0, ps, ps, -ps);
 	DrawBresLine(ps, -ps, 0, 0);
 	DrawBresLine(0, 0, -ps, -ps);
 	if (moving) {
-		glColor3d(1, 0, 0);
+		glColor3f(1.0, 0.0, 0.0);
 		DrawBresLine(-ps/2, -ps/2, 0, -ps*2);
 		DrawBresLine(0, -ps*2, ps/2, -ps/2);
 	}

@@ -16,7 +16,7 @@ void Bullet::drawBullet(){
 	glTranslated(x, y, 0);
 	glRotated(angle, 0, 0, 1);
 
-	glColor3d(1, 0, 0);
+	glColor3f(1.0, 0.0, 0.0);
 	DrawBresLine(-bs, -bs, 0, bs);
 	DrawBresLine(0, bs, bs, -bs);
 	DrawBresLine(bs, -bs, -bs, -bs);
