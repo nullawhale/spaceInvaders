@@ -18,7 +18,7 @@ using namespace std;
 
 GLfloat gCameraX = 0.f, gCameraY = 0.f;
 
-Player player(50, 50, 0);
+Player player(WIDTH_D / 2, HEIGHT_D / 2, 0);
 Bullet bullets[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
  
@@ -72,7 +72,7 @@ void output(GLfloat x, GLfloat y, string text) {
 	glTranslatef(x, y, 0);
 	glScalef(0.08, 0.08, 0);
 	for(unsigned int i = 0; i < text.length(); i++) {
-		glColor3d(1, 1, 1);
+		glColor3f(1.0, 1.0, 1.0);
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
 	}
 	glPopMatrix();
@@ -89,19 +89,26 @@ void Display() {
 	
 	glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-	
+	//TODO: Understand (fix) the workings of this part
 	glPushMatrix();
 	
 	//glTranslatef(WIDTH_D / 2.0, HEIGHT_D / 2.0, 0.0);
-	
+
+	GLuint texture;
+	texture = LoadTexture("./map.bmp");
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_QUADS);
-		glColor3f(0.01, 0.04, 0.1);
-		glVertex2f(0, 0);
-		glVertex2f(0, HEIGHT_D);
-		glVertex2f(WIDTH_D, HEIGHT_D);
-		glVertex2f(WIDTH_D, 0);
-		glVertex2f(0, 0);
+		glColor3f(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
+		glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
+		glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
+		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
 	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
 	
 	if (player.angle >= 360) {
 		player.angle = 0;
@@ -116,20 +123,6 @@ void Display() {
 			bullets[i].drawBullet();
 		}
 	}
-
-	GLuint texture;
-	texture = LoadTexture("./map.bmp");
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glPushMatrix();
-	glBegin(GL_QUADS);
-		glTexCoord2d(10.0, 10.0); glVertex2d(10.0, 10.0);
-		glTexCoord2d(10.0, 210.0); glVertex2d(10.0, 210.0);
-		glTexCoord2d(210.0, 210.0); glVertex2d(210.0, 210.0);
-		glTexCoord2d(210.0, 10.0); glVertex2d(210.0, 10.0);
-	glEnd();
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
 	
 	/*Debug on screen*/
 	buff = "player.angle = " + toStr(player.angle);
