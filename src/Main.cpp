@@ -11,7 +11,6 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Asteroid.h"
-#include "DrawBresenhamLine.h"
 #include "MainConst.h"
 
 using namespace std;
