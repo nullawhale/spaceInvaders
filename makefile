@@ -6,7 +6,7 @@ ifeq ($(UNAME), Linux)
 	OBJ_CLEAN=obj/*.o
 else
 	RM = del
-	EXECUTABLE=out\game
+	EXECUTABLE=out\game.exe
 	LIBS=-lglew32 -lfreeglut -lopengl32
 	OBJ_CLEAN=obj\*.o
 endif
