@@ -17,9 +17,10 @@ void Bullet::drawBullet(){
 	glRotated(angle, 0, 0, 1);
 
 	glColor3f(1.0, 0.0, 0.0);
-	DrawBresLine(-bs, -bs, 0, bs);
-	DrawBresLine(0, bs, bs, -bs);
-	DrawBresLine(bs, -bs, -bs, -bs);
+        DrawBresLine(bs/2, bs/2, bs+5, bs+5);
+//	DrawBresLine(-bs, -bs, 0, bs);
+//	DrawBresLine(0, bs, bs, -bs);
+//	DrawBresLine(bs, -bs, -bs, -bs);
 
 	glPopMatrix();
 }

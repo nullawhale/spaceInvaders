@@ -6,12 +6,13 @@
 #include "LoadTexture.h"
 #include "MainConst.h"
 	
-GLuint LoadTexture(const char* filename){
-	GLuint texture;
+struct Pekish LoadTexture(const char* filename){
+        struct Pekish pekish_var;
+	//GLuint texture;
 	unsigned char header[54]; // Every BMP starts with 54bit header
 	unsigned int width, height;
 	unsigned int imageSize;   // width*height*3
-	unsigned char * data; // RGB data
+	//unsigned char * data; // RGB data
 
 	FILE* file = fopen(filename, "rb");
 	if (!file) {
@@ -31,18 +32,17 @@ GLuint LoadTexture(const char* filename){
 	height     = *(int*)&(header[0x16]);
 
 
-	data = new unsigned char[imageSize];
-	fread(data, 1, imageSize, file);
+	pekish_var.data = new unsigned char[imageSize];
+	fread(pekish_var.data, 1, imageSize, file);
 	fclose(file);
 
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+        glGenTextures(1, &pekish_var.texture);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO: Understand how it works!
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, pekish_var.texture);
 
-	free(data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, pekish_var.data);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //TODO: Understand how it works!
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	return texture;
+	return pekish_var;
 }
