@@ -16,7 +16,7 @@ void DrawBresLine(double _x0, double _y0, double _x1, double _y1) {
     int err = (dx > dy ? dx : -dy) / 2;
     int e2;
 
-    while(true) { 
+   while (true) { 
         glBegin(GL_POINTS);
             glVertex3f(_x0, _y0, 0.0);
         glEnd();

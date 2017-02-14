@@ -1,6 +1,11 @@
 #ifndef __LOAD_TEXTURE__
 #define __LOAD_TEXTURE__
 
-GLuint LoadTexture(const char* filename);
+struct Pekish {
+    GLuint texture;
+    unsigned char * data;
+};
+
+struct Pekish LoadTexture(const char* filename);
 
 #endif // __LOAD_TEXTURE__

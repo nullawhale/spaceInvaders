@@ -88,40 +88,44 @@ void Display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+        glPopMatrix();
 	//TODO: Understand (fix) the workings of this part
 	glPushMatrix();
 	
 	//glTranslatef(WIDTH_D / 2.0, HEIGHT_D / 2.0, 0.0);
+        struct Pekish pekish_var = LoadTexture("./map.bmp");
 
 	GLuint texture;
-	texture = LoadTexture("./map.bmp");
+	texture = pekish_var.texture;
+        unsigned char * data = pekish_var.data;
 
+        printf("%d ", data[640*240 + 240]);
+        
 	glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_QUADS);
-		glColor3f(1.0, 1.0, 1.0);
-		glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
-		glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
-		glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
-		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
+                glColor3f(1.0, 1.0, 1.0);
+                glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
+                glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
+                glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
+                glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
 	
 	if (player.angle >= 360) {
-		player.angle = 0;
+                player.angle = 0;
 	}
 	if (player.angle <= -360) {
-		player.angle = 0;
+                player.angle = 0;
 	}
 	player.drawPlayer();
 	
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		if (bullets[i].active) {
-			bullets[i].drawBullet();
-		}
+                if (bullets[i].active) {
+                        bullets[i].drawBullet();
+                }
 	}
 	
 	/*Debug on screen*/
@@ -149,14 +153,14 @@ void update(int value) {
 	}
 	if (shoot == 1) {
 		for(int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-            if(!bullets[i].active) {
-                bullets[i].active = 1;
-                bullets[i].x = player.x;
-                bullets[i].y = player.y;
-                bullets[i].angle = player.angle;
-                break;
-            }
-        }
+                    if(!bullets[i].active) {
+                        bullets[i].active = 1;
+                        bullets[i].x = player.x;
+                        bullets[i].y = player.y;
+                        bullets[i].angle = player.angle;
+                        break;
+                    }
+                }
 		shoot = 0;
 	}
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
@@ -164,8 +168,8 @@ void update(int value) {
 	}
 	
 	glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glLoadIdentity();
+        glPopMatrix();
+        glLoadIdentity();
 	
 	//glTranslatef(-gCameraX, -gCameraY, 0.0);
 	
@@ -181,7 +185,7 @@ void Initialize() {
 	glOrtho(0.0, WIDTH_D, 0.0, HEIGHT_D, -5.0, 5.0);
 	
 	glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+        glLoadIdentity();
 	
 	glPushMatrix();
 	
