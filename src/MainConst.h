@@ -8,7 +8,7 @@ const int HEIGHT_I = 480;
 
 const int PLAYER_SPEED = 7;
 const int ROTATE_SPEED = 15;
-const int BULLET_SPEED = 20;
+const int BULLET_SPEED = 2;
 const int CAMERA_SPEED = 7;
 const int ASTEROID_SPEED = 7;
 
