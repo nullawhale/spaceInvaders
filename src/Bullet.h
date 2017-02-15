@@ -5,7 +5,7 @@ class Bullet{
 public:
 	Bullet();
 	void drawBullet();
-	void update();
+	void update(unsigned char ** d);
 
 	double x;
 	double y;

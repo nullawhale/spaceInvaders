@@ -3,7 +3,7 @@
 
 struct Pekish {
     GLuint texture;
-    unsigned char * data;
+    unsigned char ** data;
 };
 
 struct Pekish LoadTexture(const char* filename);
