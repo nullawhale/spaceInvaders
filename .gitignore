@@ -1,10 +1,10 @@
 *.exe
 *.bat
 *.gch
-*.txt
-*.dev
 *.layout
-*.win
+*.txt
+*.cbp
+*.depend
 bin/
 out/
 obj/
