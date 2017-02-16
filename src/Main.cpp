@@ -99,8 +99,23 @@ void Display() {
 	pekish_var = LoadTexture("./map.bmp");
 	GLuint texture;
 	texture = pekish_var.texture;
+	unsigned char ** data = pekish_var.data;
 
-	glEnable(GL_TEXTURE_2D);
+	for (unsigned int i = 0; i < pekish_var.width; i++){
+		for (unsigned int j = 0; j < pekish_var.height; j++){
+		    if (data[i][j] == 0){
+                glColor3f(0.0, 0.0, 0.0);
+		    } else {
+		        glColor3f(1.0, 1.0, 1.0);
+		    }
+
+            glBegin(GL_POINTS);
+                glVertex3f(i, j, 0.0);
+            glEnd();
+		}
+	}
+
+	/*glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_QUADS);
@@ -111,7 +126,7 @@ void Display() {
 		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);*/
 
 	if (player.angle >= 360) {
 		player.angle = 0;
