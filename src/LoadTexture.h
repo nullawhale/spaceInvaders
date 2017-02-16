@@ -4,6 +4,7 @@
 struct Pekish {
     GLuint texture;
     unsigned char ** data;
+    unsigned int width, height;
 };
 
 struct Pekish LoadTexture(const char* filename);
