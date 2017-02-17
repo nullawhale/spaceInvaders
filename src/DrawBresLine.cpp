@@ -3,12 +3,13 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include <cmath>
+#include <cstdio>
+
 #include "DrawBresLine.h"
-#include "MainConst.h"
 
-using namespace std;
-
-void DrawBresLine(double _x0, double _y0, double _x1, double _y1) {
+std::vector<pair_t> BresLine(double _x0, double _y0, double _x1, double _y1, bool draw) {
+    std::vector<pair_t> line;
+    pair_t pair;
     int dx = abs(_x1 - _x0);
     int sx = _x0 < _x1 ? 1 : -1;
     int dy = abs(_y1 - _y0);
@@ -16,10 +17,15 @@ void DrawBresLine(double _x0, double _y0, double _x1, double _y1) {
     int err = (dx > dy ? dx : -dy) / 2;
     int e2;
 
-   while (true) { 
-        glBegin(GL_POINTS);
-            glVertex3f(_x0, _y0, 0.0);
-        glEnd();
+   while (true) {
+        pair.x = _x0; pair.y = _y0;
+        line.insert(line.end(), pair);
+
+        if (draw){
+            glBegin(GL_POINTS);
+                glVertex3f(_x0, _y0, 0.0);
+            glEnd();
+        }
 
         if (_x0==_x1 && _y0==_y1) {
             break;
@@ -34,4 +40,5 @@ void DrawBresLine(double _x0, double _y0, double _x1, double _y1) {
             _y0 += sy;
         }
     }
+    return line;
 }

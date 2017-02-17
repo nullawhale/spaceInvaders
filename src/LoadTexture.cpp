@@ -1,60 +1,60 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
-#include <locale.h>
-#include <stdio.h>
+#include <cstdio>
 #include "LoadTexture.h"
-#include "MainConst.h"
 
-struct Pekish LoadTexture(const char* filename){
-	struct Pekish pekish_var;
-	//GLuint texture;
-	unsigned char header[54]; // Every BMP starts with 54bit header
-	//unsigned int width, height;
-	unsigned int imageSize;   // width*height*3
-	unsigned char * rgb_data; // RGB data
-	int counter = 0;
+#pragma pack(push, 1)
+struct header_t
+{
+    u8 field[2];
+    u32 size;
+    u16 reserved1, reserved2;
+    u32 data_offset;
+};
 
-	FILE* file = fopen(filename, "rb");
-	if (!file) {
-		printf("Image could not be opened");
-	}
+struct info_header_t
+{
+    u32 header_size;
+    int width;
+    int height;
+    u16 planes;
+    u16 bits_per_pixel;
+    u32 compression_method;
+    u32 size;
+    int h_resolution;
+    int v_resolution;
+    u32 number_of_colors;
+    u32 number_of_important_colors;
+};
+#pragma pack(pop)
 
-	if (fread(header, 1, 54, file) != 54) { // reading 54 bites
-		printf("Not a correct BMP file\n");
-	}
+struct map_t LoadTexture(const char* filename){
+    struct map_t map;
+    map.name = (char*)filename;
 
-	if(header[0] != 'B' || header[1] != 'M') {
-		printf("Not a correct BMP file\n");
-	}
+    FILE* file = fopen(filename, "rb");
 
-	imageSize = *(int*)&(header[0x22]); // data position at 0x0A
-	pekish_var.width = *(int*)&(header[0x12]);
-	pekish_var.height = *(int*)&(header[0x16]);
-	pekish_var.data = new unsigned char * [pekish_var.width];
-	for(unsigned int i = 0; i < pekish_var.width; i++){
-		pekish_var.data[i] = new unsigned char[pekish_var.height];
-	}
+    struct header_t header;
+    fread(&header, sizeof(header), 1, file);
 
-	rgb_data = new unsigned char[imageSize];
+    struct info_header_t info_header;
+    fread(&info_header, sizeof(info_header), 1, file);
 
-	fread(rgb_data, 1, imageSize, file);
-	fclose(file);
+    map.data = new u8[info_header.size];
+    fseek(file, header.data_offset, SEEK_SET);
 
-	for (unsigned int i = 0; i < pekish_var.width; i++){
-		for (unsigned int j = 0; j < pekish_var.height; j++){
-			pekish_var.data[i][j] = rgb_data[counter];
-			counter++;
-		}
-	}
+    fread(map.data, 1, info_header.size, file);
 
-	glGenTextures(1, &pekish_var.texture);
-	glBindTexture(GL_TEXTURE_2D, pekish_var.texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-              pekish_var.width, pekish_var.height,
-              0, GL_BGR, GL_UNSIGNED_BYTE, rgb_data);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //TODO: Understand how it works!
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    fclose(file);
 
-	return pekish_var;
+    glGenTextures(1, &map.texture);
+
+    glBindTexture(GL_TEXTURE_2D, map.texture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, info_header.width, info_header.height, 0, GL_BGR, GL_UNSIGNED_BYTE, map.data);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //TODO: Understand how it works!
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    return map;
 }
