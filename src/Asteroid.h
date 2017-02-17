@@ -1,6 +1,8 @@
 #ifndef __ASTEROID__
 #define __ASTEROID__
 
+#include "MainConst.h"
+
 class Asteroid{
 public:
 	Asteroid();
