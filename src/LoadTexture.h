@@ -1,12 +1,14 @@
 #ifndef __LOAD_TEXTURE__
 #define __LOAD_TEXTURE__
 
-struct Pekish {
+#include "MainConst.h"
+
+struct map_t {
     GLuint texture;
-    unsigned char ** data;
-    unsigned int width, height;
+    u8* data;
+    char* name;
 };
 
-struct Pekish LoadTexture(const char* filename);
+struct map_t LoadTexture(const char* filename);
 
 #endif // __LOAD_TEXTURE__

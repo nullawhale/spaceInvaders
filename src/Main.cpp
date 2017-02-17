@@ -1,31 +1,29 @@
 #include <iostream>
-#include <locale.h>
-#include <stdio.h>
+#include <clocale>
+#include <cstdio>
 #include <string>
 #include <sstream>
-#include <math.h>
+#include <cmath>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
 #include "Asteroid.h"
 #include "MainConst.h"
 
-using namespace std;
-
 GLfloat gCameraX = 0.f, gCameraY = 0.f;
 
-struct Pekish pekish_var = LoadTexture("./map.bmp");
+struct map_t map;
 Player player(WIDTH_D / 2, HEIGHT_D / 2, 0);
 Bullet bullets[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
 static int shoot = 0;
 
-string buff;
+std::string buff;
 
 void update(int value);
 
@@ -65,21 +63,24 @@ void keyboardListener(unsigned char c, int x, int y) {
 		case ' ':
 			shoot = 1; //TODO: Optimise bullets
 			break;
+		case 'm':
+			map = std::string(map.name) == "./map.bmp" ? LoadTexture("./map2.bmp") : LoadTexture("./map.bmp");
+			break;
 	}
 }
 
-void output(GLfloat x, GLfloat y, string text) {
+void output(GLfloat x, GLfloat y, std::string text) {
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	glScalef(0.08, 0.08, 0);
 	for (unsigned int i = 0; i < text.length(); i++) {
-		glColor3f(1.0, 1.0, 1.0);
+		glColor3f(0.0, 0.0, 0.0);
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
 	}
 	glPopMatrix();
 }
 
-string toStr(double one) {
+std::string toStr(double one) {
 	std::stringstream ss;
 	ss << one;
 	return ss.str();
@@ -96,26 +97,10 @@ void Display() {
 
 	//glTranslatef(WIDTH_D / 2.0, HEIGHT_D / 2.0, 0.0);
 
-	pekish_var = LoadTexture("./map.bmp");
 	GLuint texture;
-	texture = pekish_var.texture;
-	unsigned char ** data = pekish_var.data;
+	texture = map.texture;
 
-	for (unsigned int i = 0; i < pekish_var.width; i++){
-		for (unsigned int j = 0; j < pekish_var.height; j++){
-		    if (data[i][j] == 0){
-                glColor3f(0.0, 0.0, 0.0);
-		    } else {
-		        glColor3f(1.0, 1.0, 1.0);
-		    }
-
-            glBegin(GL_POINTS);
-                glVertex3f(i, j, 0.0);
-            glEnd();
-		}
-	}
-
-	/*glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_QUADS);
@@ -126,7 +111,7 @@ void Display() {
 		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D);*/
+	glDisable(GL_TEXTURE_2D);
 
 	if (player.angle >= 360) {
 		player.angle = 0;
@@ -143,7 +128,7 @@ void Display() {
 	}
 
 	/*Debug on screen*/
-	buff = "player.angle = " + toStr(player.x);
+	buff = "Map: " + std::string(map.name);
 	output(5, HEIGHT_D-10, buff);
 	/*End debug on screen*/
 
@@ -151,7 +136,7 @@ void Display() {
 }
 
 void update(int value) {
-	unsigned char ** data = pekish_var.data;
+	u8 * data = map.data;
 
 	player.update();
 
@@ -169,7 +154,7 @@ void update(int value) {
 	}
 	if (shoot == 1) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-			if (!bullets[i].active) {
+			if (bullets[i].active == 0) {
 				bullets[i].active = 1;
 				bullets[i].x = player.x;
 				bullets[i].y = player.y;
@@ -180,7 +165,9 @@ void update(int value) {
 		shoot = 0;
 	}
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		bullets[i].update(data);
+		if (bullets[i].active == 1) {
+			bullets[i].update(data);
+		}
 	}
 
 	glMatrixMode(GL_MODELVIEW);
@@ -205,6 +192,8 @@ void Initialize() {
 
 	glPushMatrix();
 
+	map = LoadTexture("./map2.bmp");
+
 	glClearColor(0, 0, 0, 1.0);
 }
 
@@ -213,7 +202,7 @@ int main(int argc, char** argv) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(WIDTH_D, HEIGHT_D);
+	glutInitWindowSize(WIDTH_D-1, HEIGHT_D);
 	glutCreateWindow("Lab 2");
 
 	Initialize();

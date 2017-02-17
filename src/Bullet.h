@@ -1,11 +1,13 @@
 #ifndef __BULLET__
 #define __BULLET__
 
+#include "MainConst.h"
+
 class Bullet{
 public:
 	Bullet();
 	void drawBullet();
-	void update(unsigned char ** d);
+	void update(u8 * d);
 
 	double x;
 	double y;
