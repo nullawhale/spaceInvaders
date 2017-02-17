@@ -6,7 +6,7 @@
 class Player{
 public:
 	Player();
-	Player(double _x, double _y, double a);	
+	Player(double _x, double _y, int a);	
 	void drawPlayer();
 	void update();
 
