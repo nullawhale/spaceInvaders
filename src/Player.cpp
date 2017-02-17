@@ -3,7 +3,6 @@
 #include <GL/gl.h>
 #include "Player.h"
 #include "DrawBresLine.h"
-#include "MainConst.h"
 
 Player::Player() {}
 
@@ -21,15 +20,15 @@ void Player::drawPlayer() {
 	glTranslated(x, y, 0);
 	glRotated(angle, 0, 0, 1);
 
-	glColor3f(1.0, 1.0, 1.0);
-	DrawBresLine(-ps, -ps, 0, ps);
-	DrawBresLine(0, ps, ps, -ps);
-	DrawBresLine(ps, -ps, 0, 0);
-	DrawBresLine(0, 0, -ps, -ps);
+	glColor3f(0.0, 1.0, 0.0);
+	BresLine(-ps, -ps, 0, ps);
+	BresLine(0, ps, ps, -ps);
+	BresLine(ps, -ps, 0, 0);
+	BresLine(0, 0, -ps, -ps);
 	if (moving) {
 		glColor3f(1.0, 0.0, 0.0);
-		DrawBresLine(-ps/2, -ps/2, 0, -ps*2);
-		DrawBresLine(0, -ps*2, ps/2, -ps/2);
+		BresLine(-ps/2, -ps/2, 0, -ps*2);
+		BresLine(0, -ps*2, ps/2, -ps/2);
 	}
 	
 	glPopMatrix();

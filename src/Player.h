@@ -1,10 +1,12 @@
 #ifndef __PLAYER__
 #define __PLAYER__
 
+#include "MainConst.h"
+
 class Player{
 public:
 	Player();
-	Player(double _x, double _y, int a);	
+	Player(double _x, double _y, double a);	
 	void drawPlayer();
 	void update();
 
