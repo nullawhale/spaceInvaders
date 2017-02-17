@@ -11,7 +11,7 @@ else
 	OBJ_CLEAN=obj\*.o
 endif
 CC=g++
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c++11
 STATIC=-static-libgcc -static-libstdc++
 OBJ_DIR=obj/
 SRC_DIR=src/
@@ -21,11 +21,11 @@ SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)DrawBresLine.cpp \
 OBJECTS=$(SOURCES:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 all: $(SOURCES) $(EXECUTABLE)
-	
+
 $(EXECUTABLE): $(OBJECTS) 
 	$(CC) $(OBJECTS) -o $@ $(LIBS) $(STATIC)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp src/*.h
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:

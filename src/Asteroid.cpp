@@ -1,10 +1,9 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
-#include <math.h>
+#include <cmath>
 #include "Asteroid.h"
 #include "DrawBresLine.h"
-#include "MainConst.h"
 
 Asteroid::Asteroid(){}
 
@@ -14,8 +13,8 @@ void Asteroid::drawAsteroid(){
 	glPushMatrix();
 
         glColor3f(1.0, 0.0, 0.0);
-        DrawBresLine(-as, -as, 0, as);
-        DrawBresLine(0, as, as, -as);
+        BresLine(-as, -as, 0, as);
+        BresLine(0, as, as, -as);
 
 	glPopMatrix();
 }
