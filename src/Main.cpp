@@ -15,24 +15,26 @@
 #include "MainConst.h"
 
 struct map_t map;
-Player player(WIDTH_D / 2, HEIGHT_D / 2, 0);
+Player player1(WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
+Player player2(WIDTH_D / 2, HEIGHT_D / 2, 0);
 Bullet bullets[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
-static bool shoot = false;
+static bool shoot_p1 = false;
+static bool shoot_p2 = false;
 
 std::string buff;
 
 void KeyboardMove(int key, int _x, int _y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
-			player.left = 1;
+			player1.left = 1;
 			break;
 		case GLUT_KEY_RIGHT:
-			player.right = 1;
+			player1.right = 1;
 			break;
 		case GLUT_KEY_UP:
-			player.moving = 1;
+			player1.moving = 1;
 			break;
 	}
 }
@@ -40,13 +42,13 @@ void KeyboardMove(int key, int _x, int _y) {
 void KeyboardMoveUp(int key, int _x, int _y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
-			player.left = 0;
+			player1.left = 0;
 			break;
 		case GLUT_KEY_RIGHT:
-			player.right = 0;
+			player1.right = 0;
 			break;
 		case GLUT_KEY_UP:
-			player.moving = 0;
+			player1.moving = 0;
 			break;
 	}
 }
@@ -57,13 +59,39 @@ void keyboardListener(unsigned char c, int x, int y) {
 			exit(0);
 			break;
 		case ' ':
-			shoot = true;
+			shoot_p2 = true;
+			break;
+		case '0':
+			shoot_p1 = true;
 			break;
 		case 'm':
 			map = std::string(map.name) == "./map.bmp" ? LoadTexture("./map2.bmp") : LoadTexture("./map.bmp");
 			for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++){
 				bullets[i].active = 0;
 			}
+			break;
+		case 'a':
+			player2.left = 1;
+			break;
+		case 'd':
+			player2.right = 1;
+			break;
+		case 'w':
+			player2.moving = 1;
+			break;
+	}
+}
+
+void keyboardUpListener(unsigned char c, int x, int y) {
+	switch (c) {
+		case 'a':
+			player2.left = 0;
+			break;
+		case 'd':
+			player2.right = 0;
+			break;
+		case 'w':
+			player2.moving = 0;
 			break;
 	}
 }
@@ -122,14 +150,21 @@ void Display() {
     }
     glEnd();
 
-	if (player.angle >= 360) {
-		player.angle = 0;
+	if (player1.angle >= 360) {
+		player1.angle = 0;
 	}
-	if (player.angle <= -360) {
-		player.angle = 0;
+	if (player1.angle <= -360) {
+		player1.angle = 0;
 	}
+	player1.drawPlayer();
 
-	player.drawPlayer();
+	if (player2.angle >= 360) {
+		player2.angle = 0;
+	}
+	if (player2.angle <= -360) {
+		player2.angle = 0;
+	}
+	player2.drawPlayer();
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
 		if (bullets[i].active) {
@@ -148,27 +183,48 @@ void Display() {
 void update(int value) {
 	u8 * data = map.data;
 
-	player.update();
+	player1.update();
 
-	if (player.left) {
-		player.angle += ROTATE_SPEED;
+	if (player1.left) {
+		player1.angle += ROTATE_SPEED;
 	}
-	if (player.right) {
-		player.angle -= ROTATE_SPEED;
+	if (player1.right) {
+		player1.angle -= ROTATE_SPEED;
 	}
-	if (player.moving) {
-		player.x = player.x - PLAYER_SPEED * sin(player.angle * M_PI / 180);
-		player.y = player.y + PLAYER_SPEED * cos(player.angle * M_PI / 180);
+	if (player1.moving) {
+		player1.x = player1.x - PLAYER_SPEED * sin(player1.angle * M_PI / 180);
+		player1.y = player1.y + PLAYER_SPEED * cos(player1.angle * M_PI / 180);
 	}
 
-	if (shoot) {
+	if (shoot_p1) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
 			if (bullets[i].active == 0) {
-				bullets[i].shoot(player.x, player.y, player.angle);
+				bullets[i].shoot(player1.x, player1.y, player1.angle);
 				break;
 			}
 		}
-		shoot = false;
+		shoot_p1 = false;
+	}
+
+	player2.update();
+
+	if (player2.left) {
+		player2.angle += ROTATE_SPEED;
+	}
+	if (player2.right) {
+		player2.angle -= ROTATE_SPEED;
+	}
+	if (player2.moving) {
+		player2.x = player2.x - PLAYER_SPEED * sin(player2.angle * M_PI / 180);
+		player2.y = player2.y + PLAYER_SPEED * cos(player2.angle * M_PI / 180);
+	}if (shoot_p2) {
+		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
+			if (bullets[i].active == 0) {
+				bullets[i].shoot(player2.x, player2.y, player2.angle);
+				break;
+			}
+		}
+		shoot_p2 = false;
 	}
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
@@ -207,6 +263,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(Display);
 
 	glutKeyboardFunc(keyboardListener);
+	glutKeyboardUpFunc(keyboardUpListener);
 	glutSpecialFunc(KeyboardMove);
 	glutSpecialUpFunc(KeyboardMoveUp);
 
