@@ -6,17 +6,16 @@ const double HEIGHT_D = 480.0;
 const int WIDTH_I  = 640;
 const int HEIGHT_I = 480;
 
-const int PLAYER_SPEED = 4;
-const int ROTATE_SPEED = 7;
-const int BULLET_SPEED = 7;
-const int CAMERA_SPEED = 7;
-const int ASTEROID_SPEED = 2;
+const int PLAYER_SPEED = 1;
+const int ROTATE_SPEED = 1;
+const int BULLET_SPEED = 1;
+const int ASTEROID_SPEED = 1;
 
 const int PLAYER_SIZE = 10;
 const int BULLET_SIZE = 3;
 const int ASTEROID_SIZE = 3;
 
-const int MAX_BULLETS_ON_SCREEN = 100;
+const int MAX_BULLETS_ON_SCREEN = 10;
 const int MAX_ASTEROIDS_ON_SCREEN = 2;
 
 #define M_PI 3.14159265358979323846

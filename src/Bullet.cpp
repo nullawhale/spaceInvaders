@@ -9,9 +9,7 @@
 
 Bullet::Bullet(){}
 
-void Bullet::drawBullet(){
-	//int bs = BULLET_SIZE;
-	
+void Bullet::drawBullet(){	
 	glPushMatrix();
 
 	glTranslated(x, y, 0);
@@ -21,31 +19,33 @@ void Bullet::drawBullet(){
 	glBegin(GL_POINTS);
 		glVertex3f(0, 0, 0.0);
 	glEnd();
-// 	BresLine(-bs, -bs, 0, bs);
-// 	BresLine(0, bs, bs, -bs);
-// 	BresLine(bs, -bs, -bs, -bs);
 
 	glPopMatrix();
 }
 
+void Bullet::shoot(double p_x, double p_y, int p_angle){
+	active = 1;
+	x = p_x;
+	y = p_y;
+	angle = p_angle;
+	hp = 2;
+	dx = -BULLET_SPEED * sin(p_angle * M_PI / 180);
+	dy =  BULLET_SPEED * cos(p_angle * M_PI / 180);
+}
+
 void Bullet::update(u8 * d){
-    dx = BULLET_SPEED * sin(angle * M_PI / 180);
-    dy = BULLET_SPEED * cos(angle * M_PI / 180);
+    if (active == 1) {
+		x += dx;
+		y += dy;
+	}
 
-    int tmp_x, tmp_y;
+	if (d[(int)y * 640 *3 + (int)x * 3] == 255){
+		dx = -dx;
+		dy = -dy;
+		if (hp > 0) hp--;
+	}
 
-    tmp_x = x;
-    x -= dx;
-
-    tmp_y = y;
-    y += dy;
-
-    //TODO: fix this bicycle (something with types)
-	std::vector<pair_t> collision_line = BresLine((int)tmp_x, (int)tmp_y, (int)x, (int)y, false);
-	for (size_t i = 0; i < collision_line.size(); i++){
-		if (d[(int)collision_line[i].y * 640 *3 + (int)collision_line[i].x * 3] == 255){
-			active = 0;
-			x = y = -1;
-		}
+	if (hp == 0){
+		active = 0;
 	}
 }

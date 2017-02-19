@@ -14,18 +14,14 @@
 #include "Asteroid.h"
 #include "MainConst.h"
 
-GLfloat gCameraX = 0.f, gCameraY = 0.f;
-
 struct map_t map;
 Player player(WIDTH_D / 2, HEIGHT_D / 2, 0);
 Bullet bullets[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
-static int shoot = 0;
+static bool shoot = false;
 
 std::string buff;
-
-void update(int value);
 
 void KeyboardMove(int key, int _x, int _y) {
 	switch (key) {
@@ -61,10 +57,13 @@ void keyboardListener(unsigned char c, int x, int y) {
 			exit(0);
 			break;
 		case ' ':
-			shoot = 1; //TODO: Optimise bullets
+			shoot = true;
 			break;
 		case 'm':
 			map = std::string(map.name) == "./map.bmp" ? LoadTexture("./map2.bmp") : LoadTexture("./map.bmp");
+			for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++){
+				bullets[i].active = 0;
+			}
 			break;
 	}
 }
@@ -91,27 +90,37 @@ void Display() {
 
 	glMatrixMode(GL_MODELVIEW);
 
-	glPopMatrix();
-	//TODO: Understand (fix) the workings of this part
-	glPushMatrix();
+	// Draw map texture
+	// GLuint texture;
+	// texture = map.texture;
 
-	//glTranslatef(WIDTH_D / 2.0, HEIGHT_D / 2.0, 0.0);
+	// glEnable(GL_TEXTURE_2D);
 
-	GLuint texture;
-	texture = map.texture;
+	// glBindTexture(GL_TEXTURE_2D, texture);
+	// glBegin(GL_QUADS);
+	// 	glColor3f(1.0, 1.0, 1.0);
+	// 	glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
+	// 	glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
+	// 	glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
+	// 	glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
+	// glEnd();
 
-	glEnable(GL_TEXTURE_2D);
+	// glDisable(GL_TEXTURE_2D);
 
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glBegin(GL_QUADS);
-		glColor3f(1.0, 1.0, 1.0);
-		glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
-		glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
-		glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
-		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
+	// Draw map per pixel
+	glBegin(GL_POINTS);
+    for (int i = 0; i < HEIGHT_D; ++i) {
+        for (int j = 0; j < WIDTH_D; ++j) {
+            if (map.data[i * 640 * 3 + j * 3]) {
+                glColor3f(1.0f, 1.0f, 1.0f);
+            }
+            else {
+                glColor3f(0.0f, 0.0f, 0.0f);
+            }
+            glVertex3i(j, i, 0);
+        }
+    }
+    glEnd();
 
 	if (player.angle >= 360) {
 		player.angle = 0;
@@ -119,6 +128,7 @@ void Display() {
 	if (player.angle <= -360) {
 		player.angle = 0;
 	}
+
 	player.drawPlayer();
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
@@ -149,37 +159,26 @@ void update(int value) {
 	if (player.moving) {
 		player.x = player.x - PLAYER_SPEED * sin(player.angle * M_PI / 180);
 		player.y = player.y + PLAYER_SPEED * cos(player.angle * M_PI / 180);
-		//gCameraX = player.x - CAMERA_SPEED * sin(player.angle * M_PI / 180);
-		//gCameraY = player.y + CAMERA_SPEED * cos(player.angle * M_PI / 180);
 	}
-	if (shoot == 1) {
+
+	if (shoot) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
 			if (bullets[i].active == 0) {
-				bullets[i].active = 1;
-				bullets[i].x = player.x;
-				bullets[i].y = player.y;
-				bullets[i].angle = player.angle;
+				bullets[i].shoot(player.x, player.y, player.angle);
 				break;
 			}
 		}
-		shoot = 0;
-	}
-	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		if (bullets[i].active == 1) {
-			bullets[i].update(data);
-		}
+		shoot = false;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
+		bullets[i].update(data);
+	}
+
 	glLoadIdentity();
 
-	//glTranslatef(-gCameraX, -gCameraY, 0.0);
-
-	glPushMatrix();
-
 	glutPostRedisplay();
-	glutTimerFunc(33, update, 0);
+	glutTimerFunc(1, update, 0);
 }
 
 void Initialize() {
@@ -189,8 +188,6 @@ void Initialize() {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	glPushMatrix();
 
 	map = LoadTexture("./map2.bmp");
 
@@ -202,7 +199,7 @@ int main(int argc, char** argv) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(WIDTH_D-1, HEIGHT_D);
+	glutInitWindowSize(WIDTH_D, HEIGHT_D);
 	glutCreateWindow("Lab 2");
 
 	Initialize();
@@ -213,7 +210,7 @@ int main(int argc, char** argv) {
 	glutSpecialFunc(KeyboardMove);
 	glutSpecialUpFunc(KeyboardMoveUp);
 
-	glutTimerFunc(33, update, 0);
+	glutTimerFunc(1, update, 0);
 	glutMainLoop();
 	return 0;
 }
