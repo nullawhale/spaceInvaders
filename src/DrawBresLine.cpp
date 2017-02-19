@@ -10,9 +10,9 @@
 std::vector<pair_t> BresLine(double _x0, double _y0, double _x1, double _y1, bool draw) {
     std::vector<pair_t> line;
     pair_t pair;
-    int dx = abs(_x1 - _x0);
+    int dx = fabs(_x1 - _x0);
     int sx = _x0 < _x1 ? 1 : -1;
-    int dy = abs(_y1 - _y0);
+    int dy = fabs(_y1 - _y0);
     int sy = _y0 < _y1 ? 1 : -1;
     int err = (dx > dy ? dx : -dy) / 2;
     int e2;
