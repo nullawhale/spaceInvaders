@@ -34,9 +34,16 @@ void Player::drawPlayer() {
 	glPopMatrix();
 }
 
-void Player::update() {
-	if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
+void Player::update(u8 * d) {
+	x += dx;
+	y += dy;
+
+	if (d[(int)y * 640 *3 + (int)x * 3] == 255){
+		x = -50;
+		y = -50;
+	}
+	/*if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
 	if (x <= PLAYER_SIZE) { x = PLAYER_SIZE; }
 	if (y >= HEIGHT_D - PLAYER_SIZE) { y = HEIGHT_D - PLAYER_SIZE; }
-	if (y <= PLAYER_SIZE) { y = PLAYER_SIZE; }
+	if (y <= PLAYER_SIZE) { y = PLAYER_SIZE; }*/
 }

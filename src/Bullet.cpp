@@ -34,18 +34,26 @@ void Bullet::shoot(double p_x, double p_y, int p_angle){
 }
 
 void Bullet::update(u8 * d){
+    double tmp_x, tmp_y;
     if (active == 1) {
-		x += dx;
-		y += dy;
-	}
+        tmp_x = x;
+        x += dx;
+        tmp_y = y;
+        y += dy;
+    }
 
-	if (d[(int)y * 640 *3 + (int)x * 3] == 255){
-		dx = -dx;
-		dy = -dy;
-		if (hp > 0) hp--;
-	}
+    if (d[(int)y * 640 *3 + (int)x * 3] == 255){
+        if ((x + 1 == tmp_x) || (x - 1 == tmp_x)) {
+            dx = -dx;
+        } else if ((y + 1 == tmp_y) || (y - 1 == tmp_y)) {
+            dy = -dy;
+        }
+        //dx = -dx;
+        //dy = -dy;
+        if (hp > 0) hp--;
+    }
 
-	if (hp == 0){
-		active = 0;
-	}
+    if (hp == 0){
+        active = 0;
+    }
 }

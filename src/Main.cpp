@@ -36,6 +36,9 @@ void KeyboardMove(int key, int _x, int _y) {
 		case GLUT_KEY_UP:
 			player1.moving = 1;
 			break;
+		case GLUT_KEY_DOWN:
+			player1.slowdown = 1;
+			break;
 	}
 }
 
@@ -50,6 +53,9 @@ void KeyboardMoveUp(int key, int _x, int _y) {
 		case GLUT_KEY_UP:
 			player1.moving = 0;
 			break;
+		case GLUT_KEY_DOWN:
+				player1.slowdown = 0;
+				break;
 	}
 }
 
@@ -70,6 +76,12 @@ void keyboardListener(unsigned char c, int x, int y) {
 				bullets[i].active = 0;
 			}
 			break;
+		case 'r':
+			player1.x = WIDTH_D / 5.5; player1.y = HEIGHT_D / 5.5;
+			player1.a = player2.a = 0;
+			player2.x = WIDTH_D / 2; player2.y = HEIGHT_D / 2;
+			player1.dx = player1.dy = player2.dx = player2.dy = 0;
+			break;						
 		case 'a':
 			player2.left = 1;
 			break;
@@ -137,18 +149,18 @@ void Display() {
 
 	// Draw map per pixel
 	glBegin(GL_POINTS);
-    for (int i = 0; i < HEIGHT_D; ++i) {
-        for (int j = 0; j < WIDTH_D; ++j) {
-            if (map.data[i * 640 * 3 + j * 3]) {
-                glColor3f(1.0f, 1.0f, 1.0f);
-            }
-            else {
-                glColor3f(0.0f, 0.0f, 0.0f);
-            }
-            glVertex3i(j, i, 0);
-        }
-    }
-    glEnd();
+	for (int i = 0; i < HEIGHT_D; ++i) {
+		for (int j = 0; j < WIDTH_D; ++j) {
+			if (map.data[i * 640 * 3 + j * 3]) {
+				glColor3f(1.0f, 1.0f, 1.0f);
+			}
+			else {
+				glColor3f(0.0f, 0.0f, 0.0f);
+			}
+			glVertex3i(j, i, 0);
+		}
+	}
+	glEnd();
 
 	if (player1.angle >= 360) {
 		player1.angle = 0;
@@ -183,7 +195,7 @@ void Display() {
 void update(int value) {
 	u8 * data = map.data;
 
-	player1.update();
+	player1.update(data);
 
 	if (player1.left) {
 		player1.angle += ROTATE_SPEED;
@@ -192,10 +204,16 @@ void update(int value) {
 		player1.angle -= ROTATE_SPEED;
 	}
 	if (player1.moving) {
-		player1.x = player1.x - PLAYER_SPEED * sin(player1.angle * M_PI / 180);
-		player1.y = player1.y + PLAYER_SPEED * cos(player1.angle * M_PI / 180);
+		if (player1.a < 1) player1.a += 0.1; 
+		player1.dx = -player1.a * sin(player1.angle * M_PI / 180);
+		player1.dy =  player1.a * cos(player1.angle * M_PI / 180);
 	}
-
+	if (player1.slowdown) {
+		if (player1.a < 0) player1.a = 0;
+		player1.dx = -player1.a * sin(player1.angle * M_PI / 180);
+		player1.dy =  player1.a * cos(player1.angle * M_PI / 180);
+		player1.a -= 0.1;
+	} 
 	if (shoot_p1) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
 			if (bullets[i].active == 0) {
@@ -206,7 +224,7 @@ void update(int value) {
 		shoot_p1 = false;
 	}
 
-	player2.update();
+	player2.update(data);
 
 	if (player2.left) {
 		player2.angle += ROTATE_SPEED;
@@ -215,9 +233,10 @@ void update(int value) {
 		player2.angle -= ROTATE_SPEED;
 	}
 	if (player2.moving) {
-		player2.x = player2.x - PLAYER_SPEED * sin(player2.angle * M_PI / 180);
-		player2.y = player2.y + PLAYER_SPEED * cos(player2.angle * M_PI / 180);
-	}if (shoot_p2) {
+		player2.dx = -PLAYER_SPEED * sin(player2.angle * M_PI / 180);
+		player2.dy =  PLAYER_SPEED * cos(player2.angle * M_PI / 180);
+	} 
+	if (shoot_p2) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
 			if (bullets[i].active == 0) {
 				bullets[i].shoot(player2.x, player2.y, player2.angle);
