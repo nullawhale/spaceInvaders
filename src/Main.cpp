@@ -7,7 +7,6 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
-//#include <opencv/cv.h>
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
@@ -15,9 +14,10 @@
 #include "MainConst.h"
 
 struct map_t map;
-Player player1(WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
-Player player2(WIDTH_D / 2, HEIGHT_D / 2, 0);
-Bullet bullets[MAX_BULLETS_ON_SCREEN];
+Player player1(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
+Player player2(true, 50, WIDTH_D / 2, HEIGHT_D / 2, 0);
+Bullet bullets_p1[MAX_BULLETS_ON_SCREEN];
+Bullet bullets_p2[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
 static bool shoot_p1 = false;
@@ -54,8 +54,8 @@ void KeyboardMoveUp(int key, int _x, int _y) {
 			player1.moving = 0;
 			break;
 		case GLUT_KEY_DOWN:
-				player1.slowdown = 0;
-				break;
+			player1.slowdown = 0;
+			break;
 	}
 }
 
@@ -73,15 +73,14 @@ void keyboardListener(unsigned char c, int x, int y) {
 		case 'm':
 			map = std::string(map.name) == "./map.bmp" ? LoadTexture("./map2.bmp") : LoadTexture("./map.bmp");
 			for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++){
-				bullets[i].active = 0;
+				bullets_p1[i].active = 0;
+				bullets_p2[i].active = 0;
 			}
 			break;
 		case 'r':
-			player1.x = WIDTH_D / 5.5; player1.y = HEIGHT_D / 5.5;
-			player1.a = player2.a = 0;
-			player2.x = WIDTH_D / 2; player2.y = HEIGHT_D / 2;
-			player1.dx = player1.dy = player2.dx = player2.dy = 0;
-			break;						
+			player1.reset(WIDTH_D / 5.5, HEIGHT_D / 5.5);
+			player2.reset(WIDTH_D / 2, HEIGHT_D / 2);
+			break;
 		case 'a':
 			player2.left = 1;
 			break;
@@ -90,6 +89,9 @@ void keyboardListener(unsigned char c, int x, int y) {
 			break;
 		case 'w':
 			player2.moving = 1;
+			break;
+		case 's':
+			player2.slowdown = 1;
 			break;
 	}
 }
@@ -105,6 +107,9 @@ void keyboardUpListener(unsigned char c, int x, int y) {
 		case 'w':
 			player2.moving = 0;
 			break;
+		case 's':
+			player2.slowdown = 0;
+			break;
 	}
 }
 
@@ -114,7 +119,7 @@ void output(GLfloat x, GLfloat y, std::string text) {
 	glScalef(0.08, 0.08, 0);
 	for (unsigned int i = 0; i < text.length(); i++) {
 		glColor3f(0.0, 0.0, 0.0);
-		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+		glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, text[i]);
 	}
 	glPopMatrix();
 }
@@ -131,61 +136,55 @@ void Display() {
 	glMatrixMode(GL_MODELVIEW);
 
 	// Draw map texture
-	// GLuint texture;
-	// texture = map.texture;
+	GLuint texture;
+	texture = map.texture;
 
-	// glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 
-	// glBindTexture(GL_TEXTURE_2D, texture);
-	// glBegin(GL_QUADS);
-	// 	glColor3f(1.0, 1.0, 1.0);
-	// 	glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
-	// 	glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
-	// 	glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
-	// 	glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
-	// glEnd();
-
-	// glDisable(GL_TEXTURE_2D);
-
-	// Draw map per pixel
-	glBegin(GL_POINTS);
-	for (int i = 0; i < HEIGHT_D; ++i) {
-		for (int j = 0; j < WIDTH_D; ++j) {
-			if (map.data[i * 640 * 3 + j * 3]) {
-				glColor3f(1.0f, 1.0f, 1.0f);
-			}
-			else {
-				glColor3f(0.0f, 0.0f, 0.0f);
-			}
-			glVertex3i(j, i, 0);
-		}
-	}
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBegin(GL_QUADS);
+		glColor3f(1.0, 1.0, 1.0);
+		glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
+		glTexCoord2f(0.0, 1.0); glVertex2f(0.0, HEIGHT_D);
+		glTexCoord2f(1.0, 1.0); glVertex2f(WIDTH_D, HEIGHT_D);
+		glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
 	glEnd();
 
-	if (player1.angle >= 360) {
-		player1.angle = 0;
-	}
-	if (player1.angle <= -360) {
-		player1.angle = 0;
-	}
-	player1.drawPlayer();
+	glDisable(GL_TEXTURE_2D);
 
-	if (player2.angle >= 360) {
-		player2.angle = 0;
+	// Draw map per pixel
+	// glBegin(GL_POINTS);
+	// for (int i = 0; i < HEIGHT_D; ++i) {
+	// 	for (int j = 0; j < WIDTH_D; ++j) {
+	// 		if (map.data[i * 640 * 3 + j * 3]) {
+	// 			glColor3f(1.0f, 1.0f, 1.0f);
+	// 		}
+	// 		else {
+	// 			glColor3f(0.0f, 0.0f, 0.0f);
+	// 		}
+	// 		glVertex3i(j, i, 0);
+	// 	}
+	// }
+	// glEnd();
+
+	if (player1.life){
+		player1.drawPlayer();
 	}
-	if (player2.angle <= -360) {
-		player2.angle = 0;
+	if (player2.life){
+		player2.drawPlayer();
 	}
-	player2.drawPlayer();
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		if (bullets[i].active) {
-			bullets[i].drawBullet();
+		if (bullets_p1[i].active) {
+			bullets_p1[i].drawBullet();
+		}
+		if (bullets_p2[i].active) {
+			bullets_p2[i].drawBullet();
 		}
 	}
 
 	/*Debug on screen*/
-	buff = "Map: " + std::string(map.name);
+	buff = "Map: " + toStr(player1.hp) + " " + toStr(player2.hp) + " " + toStr(player1.angle);
 	output(5, HEIGHT_D-10, buff);
 	/*End debug on screen*/
 
@@ -196,50 +195,22 @@ void update(int value) {
 	u8 * data = map.data;
 
 	player1.update(data);
+	player2.update(data);
 
-	if (player1.left) {
-		player1.angle += ROTATE_SPEED;
-	}
-	if (player1.right) {
-		player1.angle -= ROTATE_SPEED;
-	}
-	if (player1.moving) {
-		if (player1.a < 1) player1.a += 0.1; 
-		player1.dx = -player1.a * sin(player1.angle * M_PI / 180);
-		player1.dy =  player1.a * cos(player1.angle * M_PI / 180);
-	}
-	if (player1.slowdown) {
-		if (player1.a < 0) player1.a = 0;
-		player1.dx = -player1.a * sin(player1.angle * M_PI / 180);
-		player1.dy =  player1.a * cos(player1.angle * M_PI / 180);
-		player1.a -= 0.1;
-	} 
 	if (shoot_p1) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-			if (bullets[i].active == 0) {
-				bullets[i].shoot(player1.x, player1.y, player1.angle);
+			if (bullets_p1[i].active == 0) {
+				bullets_p1[i].shoot(player1.x, player1.y, player1.angle);
 				break;
 			}
 		}
 		shoot_p1 = false;
 	}
 
-	player2.update(data);
-
-	if (player2.left) {
-		player2.angle += ROTATE_SPEED;
-	}
-	if (player2.right) {
-		player2.angle -= ROTATE_SPEED;
-	}
-	if (player2.moving) {
-		player2.dx = -PLAYER_SPEED * sin(player2.angle * M_PI / 180);
-		player2.dy =  PLAYER_SPEED * cos(player2.angle * M_PI / 180);
-	} 
 	if (shoot_p2) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-			if (bullets[i].active == 0) {
-				bullets[i].shoot(player2.x, player2.y, player2.angle);
+			if (bullets_p2[i].active == 0) {
+				bullets_p2[i].shoot(player2.x, player2.y, player2.angle);
 				break;
 			}
 		}
@@ -247,7 +218,8 @@ void update(int value) {
 	}
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		bullets[i].update(data);
+		bullets_p1[i].update(data);
+		bullets_p2[i].update(data);
 	}
 
 	glLoadIdentity();
@@ -274,7 +246,7 @@ int main(int argc, char** argv) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(WIDTH_D, HEIGHT_D);
+	glutInitWindowSize(WIDTH_D, HEIGHT_D+50);
 	glutCreateWindow("Lab 2");
 
 	Initialize();
