@@ -1,14 +1,16 @@
 #ifndef __PLAYER__
 #define __PLAYER__
 
+#include <cmath>
 #include "MainConst.h"
 
 class Player{
 public:
 	Player();
-	Player(double _x, double _y, int a);	
+	Player(bool l, int _hp, double _x, double _y, int a);
 	void drawPlayer();
 	void update(u8 * d);
+	void reset(int _x, int _y);
 
 	double x;
 	double y;
@@ -20,6 +22,8 @@ public:
 	int slowdown;
 	int left;	 // 1 - left;
 	int right;   // 1 - right;
+	bool life;
+	int hp;
 };
 
 #endif // __PLAYER__
