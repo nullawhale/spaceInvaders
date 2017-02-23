@@ -10,6 +10,10 @@ else
 	LIBS=-lglew32 -lfreeglut -lopengl32
 	OBJ_CLEAN=obj\*.o
 endif
+
+if not exist obj mkdir obj
+if not exist out mkdir out
+
 CC=g++
 CFLAGS=-c -Wall -std=c++11
 STATIC=-static-libgcc -static-libstdc++
