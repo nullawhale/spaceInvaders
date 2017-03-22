@@ -1,18 +1,7 @@
-UNAME := $(shell uname)
-ifeq ($(UNAME), Linux)
-	RM = rm -rf
-	EXECUTABLE=out/game
-	LIBS=-lGLEW -lglut -lGL
-	OBJ_CLEAN=obj/*.o
-else
-	RM = del
-	EXECUTABLE=out\game.exe
-	LIBS=-lglew32 -lfreeglut -lopengl32
-	OBJ_CLEAN=obj\*.o
-endif
-
-if not exist obj mkdir obj
-if not exist out mkdir out
+RM = del
+EXECUTABLE=out\game.exe
+LIBS=-lglew32 -lfreeglut -lopengl32
+OBJ_CLEAN=obj\*.o
 
 CC=g++
 CFLAGS=-c -Wall -std=c++11

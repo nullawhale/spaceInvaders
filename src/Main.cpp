@@ -184,7 +184,7 @@ void Display() {
 	}
 
 	/*Debug on screen*/
-	buff = "Map: " + toStr(player1.hp) + " " + toStr(player2.hp) + " " + toStr(player1.angle);
+	buff = "Map: " + std::string(map.name);
 	output(5, HEIGHT_D-10, buff);
 	/*End debug on screen*/
 
@@ -225,7 +225,7 @@ void update(int value) {
 	glLoadIdentity();
 
 	glutPostRedisplay();
-	glutTimerFunc(1, update, 0);
+	glutTimerFunc(30, update, 0);
 }
 
 void Initialize() {
@@ -258,7 +258,7 @@ int main(int argc, char** argv) {
 	glutSpecialFunc(KeyboardMove);
 	glutSpecialUpFunc(KeyboardMoveUp);
 
-	glutTimerFunc(1, update, 0);
+	glutTimerFunc(30, update, 0);
 	glutMainLoop();
 	return 0;
 }
