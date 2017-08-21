@@ -14,30 +14,27 @@
 #include "MainConst.h"
 
 struct map_t map;
-Player player1(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
-Player player2(true, 50, WIDTH_D / 2, HEIGHT_D / 2, 0);
-Bullet bullets_p1[MAX_BULLETS_ON_SCREEN];
-Bullet bullets_p2[MAX_BULLETS_ON_SCREEN];
+Player player(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
+Bullet bullets_p[MAX_BULLETS_ON_SCREEN];
 Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
-static bool shoot_p1 = false;
-static bool shoot_p2 = false;
+static bool shoot_p = false;
 
 std::string buff;
 
 void KeyboardMove(int key, int _x, int _y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
-			player1.left = 1;
+			player.left = 1;
 			break;
 		case GLUT_KEY_RIGHT:
-			player1.right = 1;
+			player.right = 1;
 			break;
 		case GLUT_KEY_UP:
-			player1.moving = 1;
+			player.moving = 1;
 			break;
 		case GLUT_KEY_DOWN:
-			player1.slowdown = 1;
+			player.slowdown = 1;
 			break;
 	}
 }
@@ -45,16 +42,16 @@ void KeyboardMove(int key, int _x, int _y) {
 void KeyboardMoveUp(int key, int _x, int _y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
-			player1.left = 0;
+			player.left = 0;
 			break;
 		case GLUT_KEY_RIGHT:
-			player1.right = 0;
+			player.right = 0;
 			break;
 		case GLUT_KEY_UP:
-			player1.moving = 0;
+			player.moving = 0;
 			break;
 		case GLUT_KEY_DOWN:
-			player1.slowdown = 0;
+			player.slowdown = 0;
 			break;
 	}
 }
@@ -65,50 +62,16 @@ void keyboardListener(unsigned char c, int x, int y) {
 			exit(0);
 			break;
 		case ' ':
-			shoot_p2 = true;
-			break;
-		case '0':
-			shoot_p1 = true;
+			shoot_p = true;
 			break;
 		case 'm':
 			map = std::string(map.name) == "./map.bmp" ? LoadTexture("./map2.bmp") : LoadTexture("./map.bmp");
 			for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++){
-				bullets_p1[i].active = 0;
-				bullets_p2[i].active = 0;
+				bullets_p[i].active = 0;
 			}
 			break;
 		case 'r':
-			player1.reset(WIDTH_D / 5.5, HEIGHT_D / 5.5);
-			player2.reset(WIDTH_D / 2, HEIGHT_D / 2);
-			break;
-		case 'a':
-			player2.left = 1;
-			break;
-		case 'd':
-			player2.right = 1;
-			break;
-		case 'w':
-			player2.moving = 1;
-			break;
-		case 's':
-			player2.slowdown = 1;
-			break;
-	}
-}
-
-void keyboardUpListener(unsigned char c, int x, int y) {
-	switch (c) {
-		case 'a':
-			player2.left = 0;
-			break;
-		case 'd':
-			player2.right = 0;
-			break;
-		case 'w':
-			player2.moving = 0;
-			break;
-		case 's':
-			player2.slowdown = 0;
+			player.reset(WIDTH_D / 5.5, HEIGHT_D / 5.5);
 			break;
 	}
 }
@@ -167,19 +130,13 @@ void Display() {
 	// }
 	// glEnd();
 
-	if (player1.life){
-		player1.drawPlayer();
-	}
-	if (player2.life){
-		player2.drawPlayer();
+	if (player.life){
+		player.drawPlayer();
 	}
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		if (bullets_p1[i].active) {
-			bullets_p1[i].drawBullet();
-		}
-		if (bullets_p2[i].active) {
-			bullets_p2[i].drawBullet();
+		if (bullets_p[i].active) {
+			bullets_p[i].drawBullet();
 		}
 	}
 
@@ -194,32 +151,20 @@ void Display() {
 void update(int value) {
 	u8 * data = map.data;
 
-	player1.update(data);
-	player2.update(data);
+	player.update(data);
 
-	if (shoot_p1) {
+	if (shoot_p) {
 		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-			if (bullets_p1[i].active == 0) {
-				bullets_p1[i].shoot(player1.x, player1.y, player1.angle);
+			if (bullets_p[i].active == 0) {
+				bullets_p[i].shoot(player.x, player.y, player.angle);
 				break;
 			}
 		}
-		shoot_p1 = false;
-	}
-
-	if (shoot_p2) {
-		for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-			if (bullets_p2[i].active == 0) {
-				bullets_p2[i].shoot(player2.x, player2.y, player2.angle);
-				break;
-			}
-		}
-		shoot_p2 = false;
+		shoot_p = false;
 	}
 
 	for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
-		bullets_p1[i].update(data);
-		bullets_p2[i].update(data);
+		bullets_p[i].update(data);
 	}
 
 	glLoadIdentity();
@@ -254,7 +199,6 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(Display);
 
 	glutKeyboardFunc(keyboardListener);
-	glutKeyboardUpFunc(keyboardUpListener);
 	glutSpecialFunc(KeyboardMove);
 	glutSpecialUpFunc(KeyboardMoveUp);
 
