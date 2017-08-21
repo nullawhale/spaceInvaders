@@ -16,23 +16,28 @@ Player::Player(bool l, int _hp, double _x, double _y, int a) {
 
 void Player::drawPlayer() {
 	int ps = PLAYER_SIZE;
-	
+
 	glPushMatrix();
-	
+
 	glTranslated(x, y, 0);
 	glRotated(angle, 0, 0, 1);
 
-	glColor3f(0.0, 1.0, 0.0);
-	BresLine(-ps, -ps, 0, ps);
-	BresLine(0, ps, ps, -ps);
-	BresLine(ps, -ps, 0, 0);
-	BresLine(0, 0, -ps, -ps);
-	if (moving) {
-		glColor3f(1.0, 0.0, 0.0);
-		BresLine(-ps/2, -ps/2, 0, -ps*2);
-		BresLine(0, -ps*2, ps/2, -ps/2);
-	}
-	
+        glBegin(GL_LINE_STRIP);
+            glColor3f(0.0, 1.0, 0.0);
+            glVertex3f(-ps, -ps, 0);
+            glVertex3f(0, ps, 0);
+            glVertex3f(ps, -ps, 0);
+            glVertex3f(0, 0, 0);
+            glVertex3f(-ps, -ps, 0);
+            if (moving) {
+                glVertex3f(-ps/2, -ps/2, 0);
+                glColor3f(1.0, 0.0, 0.0);
+                glVertex3f(0, -ps*2, 0);
+                glColor3f(0.0, 1.0, 0.0);
+                glVertex3f(ps/2, -ps/2, 0);
+            }
+        glEnd();
+
 	glPopMatrix();
 }
 
@@ -53,7 +58,7 @@ void Player::update(u8 * d) {
 		angle -= ROTATE_SPEED;
 	}
 	if (moving) {
-		if (a < 1) a += 0.1; 
+		if (a < 1) a += 0.1;
 		dx = -a * sin(angle * M_PI / 180);
 		dy =  a * cos(angle * M_PI / 180);
 	}
@@ -80,7 +85,7 @@ void Player::update(u8 * d) {
 	if (angle >= 360 || angle <= -360) {
 		angle = 0;
 	}
-	
+
 	/*
 	if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
 	if (x <= PLAYER_SIZE) { x = PLAYER_SIZE; }

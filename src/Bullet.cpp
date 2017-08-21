@@ -9,7 +9,7 @@
 
 Bullet::Bullet(){}
 
-void Bullet::drawBullet(){	
+void Bullet::drawBullet(){
 	glPushMatrix();
 
 	glTranslated(x, y, 0);
