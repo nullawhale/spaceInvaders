@@ -1,25 +1,24 @@
-RM = del
-EXECUTABLE=out\game.exe
-LIBS=-lglew32 -lfreeglut -lopengl32
-OBJ_CLEAN=obj\*.o
-
-CC=g++
-CFLAGS=-c -Wall -std=c++11
-STATIC=-static-libgcc -static-libstdc++
+EXECUTABLE=out/game
+LIBS=-lGLEW -lglut -lGL
 OBJ_DIR=obj/
 SRC_DIR=src/
+
+CFLAGS=-c -Wall -std=c++11
 SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)DrawBresLine.cpp \
 	$(SRC_DIR)Player.cpp $(SRC_DIR)Bullet.cpp $(SRC_DIR)Asteroid.cpp \
 	$(SRC_DIR)LoadTexture.cpp
-OBJECTS=$(SOURCES:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
+OBJECTS=$(OBJ_DIR)Main.o $(OBJ_DIR)DrawBresLine.o \
+	$(OBJ_DIR)Player.o $(OBJ_DIR)Bullet.o $(OBJ_DIR)Asteroid.o \
+	$(OBJ_DIR)LoadTexture.o
+MKDIRS=$(shell mkdir -p obj out)
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(MKDIRS) $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(OBJECTS) -o $@ $(LIBS) $(STATIC)
+$(EXECUTABLE): $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $@ $(LIBS)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp src/*.h
-	$(CC) $(CFLAGS) $< -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+	$(CXX) $(CFLAGS) $< -o $@
 
 clean:
-	$(RM) $(OBJ_CLEAN) $(EXECUTABLE)
+	$(RM) $(OBJ_DIR)*.o
