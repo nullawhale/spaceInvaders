@@ -7,7 +7,7 @@ const int WIDTH_I  = 640;
 const int HEIGHT_I = 480;
 
 const int PLAYER_SPEED = 1;
-const int ROTATE_SPEED = 2;s
+const int ROTATE_SPEED = 2;
 const int BULLET_SPEED = 2;
 const int ASTEROID_SPEED = 1;
 
