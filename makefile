@@ -2,6 +2,7 @@ EXECUTABLE=out/game
 LIBS=-lGLEW -lglut -lGL
 OBJ_DIR=obj/
 SRC_DIR=src/
+MKDIRS=$(shell mkdir obj/ out/)
 
 CFLAGS=-c -Wall -std=c++11
 SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)Player.cpp $(SRC_DIR)Bullet.cpp \
