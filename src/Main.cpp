@@ -10,13 +10,11 @@
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "Asteroid.h"
 #include "MainConst.h"
 
 struct map_t map;
 Player player(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
 Bullet bullets_p[MAX_BULLETS_ON_SCREEN];
-Asteroid asteroids[MAX_ASTEROIDS_ON_SCREEN];
 
 static bool shoot_p = false;
 
