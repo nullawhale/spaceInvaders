@@ -2,7 +2,6 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include "Player.h"
-#include "DrawBresLine.h"
 
 Player::Player() {}
 
