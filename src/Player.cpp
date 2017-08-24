@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
-#include "h"
+#include "Player.h"
 
 Player::Player() {}
 
@@ -47,8 +47,8 @@ void Player::KeyboardMoveUp(int key, int _x, int _y) {
     }
 }
 
-void Player::draw() {
-    int ps = SIZE;
+void Player::drawPlayer() {
+    int ps = PLAYER_SIZE;
 
     glPushMatrix();
 
