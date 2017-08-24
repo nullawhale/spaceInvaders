@@ -5,18 +5,18 @@
 
 class Bullet{
 public:
-	Bullet();
-	void drawBullet();
-	void shoot(double p_x, double p_y, int p_angle);
-	void update(u8 * d);
+    Bullet();
+    void drawBullet();
+    void shoot(double p_x, double p_y, int p_angle);
+    void update(u8 * d);
 
-	double x;
-	double y;
-	double dx;
-	double dy;
-	int angle;
-	int active;
-	int hp;
+    double x;
+    double y;
+    double dx;
+    double dy;
+    int angle;
+    int active;
+    int hp;
 };
 
 #endif // __BULLET__
