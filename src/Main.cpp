@@ -15,26 +15,37 @@ struct map_t map;
 Player player(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
 Bullet bullets_p[MAX_BULLETS_ON_SCREEN];
 
+void initGl() {
+
+}
+
+void render() {
+    player.drawPlayer();
+}
+
 int main(int argc, char** argv) {
     setlocale(LC_ALL, "");
 
     GLFWwindow* window;
-
     if (!glfwInit()) return -1;
-
     window = glfwCreateWindow(WIDTH_I, HEIGHT_I, "Space Invasers", NULL, NULL);
-
     glfwMakeContextCurrent(window);
+    int width = WIDTH_I, height = HEIGHT_I;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, WIDTH_I, HEIGHT_I);
+    glOrtho(0, width, height, 0, 0, 1);
 
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-    do {
+    while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glfwSwapBuffers(window);
         glfwPollEvents();
+
+        player.update(window);
+        render();
+
+        glfwSwapBuffers(window);
     }
 
-    while (glfwGetKey(window, GLFW_KEY_Q) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
+    glfwTerminate();
 
     return 0;
 }
