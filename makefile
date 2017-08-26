@@ -1,5 +1,5 @@
 EXECUTABLE=out/game
-LIBS=-lGLEW -lglut -lGL
+LIBS=-lglfw -lGLEW -lGL
 OBJ_DIR=obj/
 SRC_DIR=src/
 MKDIRS=$(shell mkdir obj/ out/)
