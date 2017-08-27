@@ -13,7 +13,8 @@
 
 struct map_t map;
 Player player(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
-Bullet bullets_p[MAX_BULLETS_ON_SCREEN];
+Bullet bullets[MAX_BULLETS_ON_SCREEN];
+static bool shoot_p = false;
 
 void initGl() {
 
@@ -21,6 +22,11 @@ void initGl() {
 
 void render() {
     player.drawPlayer();
+    for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
+        if (bullets[i].active) {
+            bullets[i].drawBullet();
+        }
+    }
 }
 
 int main(int argc, char** argv) {
@@ -40,6 +46,25 @@ int main(int argc, char** argv) {
         glfwPollEvents();
 
         player.update(window);
+
+        if (glfwGetKey(window, GLFW_KEY_SPACE)) {
+            shoot_p = true;
+        }
+
+        if (shoot_p) {
+            for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
+                if (bullets[i].active == 0) {
+                    bullets[i].shoot(player.x, player.y, player.angle);
+                    break;
+                }
+            }
+            shoot_p = false;
+        }
+
+        for (int i = 0; i < MAX_BULLETS_ON_SCREEN; i++) {
+            bullets[i].update();
+        }
+
         render();
 
         glfwSwapBuffers(window);
