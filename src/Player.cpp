@@ -75,10 +75,8 @@ void Player::update(GLFWwindow* window) {
     x += dx;
     y += dy;
 
-    /*
-    if (x >= WIDTH_D - SIZE) { x = WIDTH_D - SIZE; }
-    if (x <= SIZE) { x = SIZE; }
-    if (y >= HEIGHT_D - SIZE) { y = HEIGHT_D - SIZE; }
-    if (y <= SIZE) { y = SIZE; }
-    */
+    if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
+    if (x <= PLAYER_SIZE) { x = PLAYER_SIZE; }
+    if (y >= HEIGHT_D - PLAYER_SIZE) { y = HEIGHT_D - PLAYER_SIZE; }
+    if (y <= PLAYER_SIZE) { y = PLAYER_SIZE; }
 }
