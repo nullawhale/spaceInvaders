@@ -1,9 +1,10 @@
 #ifndef __PLAYER__
 #define __PLAYER__
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
-#include <GLFW/glfw3.h>
 #include "MainConst.h"
 
 class Player{
