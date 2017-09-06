@@ -32,17 +32,17 @@ void Bullet::shoot(double p_x, double p_y, int p_angle){
     dy =  BULLET_SPEED * cos(p_angle * M_PI / 180);
 }
 
-void Bullet::update(u8 * d){
+void Bullet::update(){
     if (active == 1) {
         x += dx;
         y += dy;
     }
 
-    if (d[(int)y * 640 *3 + (int)x * 3] == 255){
+    /*if (d[(int)y * 640 *3 + (int)x * 3] == 255){
         dx = -dx;
         dy = -dy;
         if (hp > 0) hp--;
-    }
+    }*/
 
     if (hp == 0){
         active = 0;
