@@ -1,14 +1,14 @@
 EXECUTABLE=out/game
-LIBS=-lGLEW -lglut -lGL
+LIBS=-lglfw -lGLEW -lGL
 OBJ_DIR=obj/
 SRC_DIR=src/
 MKDIRS=$(shell mkdir obj/ out/)
 
 CFLAGS=-c -Wall -std=c++11
 SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)Player.cpp $(SRC_DIR)Bullet.cpp \
-	$(SRC_DIR)LoadTexture.cpp
+	$(SRC_DIR)LoadTexture.cpp $(SRC_DIR)Gun.cpp
 OBJECTS=$(OBJ_DIR)Main.o $(OBJ_DIR)Player.o $(OBJ_DIR)Bullet.o \
-	$(OBJ_DIR)LoadTexture.o
+	$(OBJ_DIR)LoadTexture.o $(OBJ_DIR)Gun.o
 
 all: $(MKDIRS) $(EXECUTABLE)
 
