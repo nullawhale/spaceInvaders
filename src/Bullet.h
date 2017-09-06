@@ -1,6 +1,11 @@
 #ifndef __BULLET__
 #define __BULLET__
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <math.h>
+#include <cstdio>
+#include <vector>
 #include "MainConst.h"
 
 class Bullet{

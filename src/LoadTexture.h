@@ -1,6 +1,9 @@
 #ifndef __LOAD_TEXTURE__
 #define __LOAD_TEXTURE__
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <cstdio>
 #include "MainConst.h"
 
 struct map_t {
