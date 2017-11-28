@@ -4,5 +4,5 @@
 struct Vec2 {
 	double x;
 	double y;
-}
+};
 #endif // __VEC2__
