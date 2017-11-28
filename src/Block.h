@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include "MainConst.h"
 #include "Vec2.h"
