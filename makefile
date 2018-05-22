@@ -1,9 +1,9 @@
 ifeq ($(OS),Windows_NT)
-	RM = del /Q
+	RM = del /Q obj\*.o out\*
 	LIBS=-lglfw3dll -lglew32 -lopengl32 -lglut
 else
 	ifeq ($(shell uname), Linux)
-		RM = rm -f
+		RM = rm -f obj/*.o out/*
 		LIBS=-lglfw -lGLEW -lGL -lglut
 	endif
 endif
@@ -28,4 +28,4 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
 clean:
-	$(RM) obj\*.o out\*
+	$(RM)
