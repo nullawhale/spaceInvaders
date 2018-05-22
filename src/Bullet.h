@@ -11,8 +11,8 @@
 class Bullet{
 public:
     Bullet();
-    void drawBullet();
-    void shoot(double p_x, double p_y, int p_angle);
+    Bullet(double p_x, double p_y, int p_angle);
+    void draw();
     void update();
 
     double x;
