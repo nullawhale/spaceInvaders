@@ -1,11 +1,13 @@
 #include <iostream>
 #include <clocale>
 #include <cstdio>
-#include <string>
+#include <cstring>
+#include <vector>
 #include <sstream>
 #include <cmath>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <GL/freeglut.h>
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
@@ -16,26 +18,36 @@
 #include "TestCollisions.cpp"
 
 struct map_t map;
-Player player(true, 50, WIDTH_D / 5.5, HEIGHT_D / 5.5, 0);
-Gun gun;
-Block block(Vec2(50, 50), Vec2(100, 100));
-Block block2(Vec2(300, 300), Vec2(400, 400));
+Player player(true, 50, 15, 15, 0);
+std::vector<Bullet> bullets;
 
 void initGl() {
 
 }
 
+void drawText(int x, int y, char *string) {
+    glRasterPos2f(x, y);
+    int len = (int)strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, string[i]);
+    }
+}
+
 void render() {
     player.drawPlayer();
-    gun.draw();
-    block.drawBlock();
-    block2.drawBlock();
+    for (auto &b : bullets) {
+        b.draw();
+    }
+    char* buff = new char[bullets.size() +1];
+    strcpy(buff, std::to_string(bullets.size()).c_str());
+    drawText(100, HEIGHT_I-10, buff);
 }
 
 int main(int argc, char** argv) {
     setlocale(LC_ALL, "");
 
     GLFWwindow* window;
+    glutInit(&argc, argv);
     if (!glfwInit()) return -1;
     window = glfwCreateWindow(WIDTH_I, HEIGHT_I, "Space Invasers", NULL, NULL);
     glfwMakeContextCurrent(window);
@@ -49,11 +61,28 @@ int main(int argc, char** argv) {
         glfwPollEvents();
 
         player.update(window);
-        gun.update(window, player);
+
+        static int oldState = GLFW_RELEASE;
+        int newState = glfwGetKey(window, GLFW_KEY_SPACE);
+        if (newState == GLFW_RELEASE && oldState == GLFW_PRESS) {
+            bullets.push_back(Bullet(player.x, player.y, player.angle));
+        }
+        oldState = newState;
+
+        for (auto &b : bullets) {
+            b.update();
+        }
+
+        auto b = std::begin(bullets);
+        while (b != std::end(bullets)) {
+            if ((*b).active == 0) {
+                b = bullets.erase(b);
+            } else {
+                ++b;
+            }
+        }
 
         render();
-
-	std::cout << AABBxAABB(block, block2) << std::endl;
 
         glfwSwapBuffers(window);
     }
@@ -62,4 +91,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
