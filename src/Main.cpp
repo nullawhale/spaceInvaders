@@ -11,7 +11,6 @@
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "Gun.h"
 #include "Block.h"
 #include "MainConst.h"
 #include "Vec2.h"
