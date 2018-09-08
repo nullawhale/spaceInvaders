@@ -25,13 +25,6 @@ void Player::drawPlayer() {
         glVertex3f(ps, -ps, 0);
         glVertex3f(0, 0, 0);
         glVertex3f(-ps, -ps, 0);
-        /*if (moving) {
-            glVertex3f(-ps/2, -ps/2, 0);
-            glColor3f(1.0, 0.0, 0.0);
-            glVertex3f(0, -ps*2, 0);
-            glColor3f(0.0, 1.0, 0.0);
-            glVertex3f(ps/2, -ps/2, 0);
-        }*/
     glEnd();
 
     glPopMatrix();

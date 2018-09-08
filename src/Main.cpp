@@ -25,6 +25,7 @@ void initGl() {
 }
 
 void drawText(int x, int y, char *string) {
+    glColor3f(0.0, 1.0, 0.0);
     glRasterPos2f(x, y);
     int len = (int)strlen(string);
     for (int i = 0; i < len; i++) {
@@ -37,9 +38,12 @@ void render() {
     for (auto &b : bullets) {
         b.draw();
     }
-    char* buff = new char[bullets.size() +1];
-    strcpy(buff, std::to_string(bullets.size()).c_str());
-    drawText(100, HEIGHT_I-10, buff);
+    char* bulls = new char[bullets.size() +1];
+    strcpy(bulls, std::to_string(bullets.size()).c_str());
+    char* hp = new char[3];
+    strcpy(hp, "50");
+    drawText(100, HEIGHT_I-10, bulls);
+    drawText(150, HEIGHT_I-10, hp);
 }
 
 int main(int argc, char** argv) {
