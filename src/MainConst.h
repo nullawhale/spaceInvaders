@@ -12,7 +12,7 @@ const int BULLET_SPEED = 4;
 const int ASTEROID_SPEED = 1;
 
 const int PLAYER_SIZE = 10;
-const int BULLET_SIZE = 3;
+const int BULLET_SIZE = 1;
 const int ASTEROID_SIZE = 3;
 
 const int MAX_BULLETS_ON_SCREEN = 10;
