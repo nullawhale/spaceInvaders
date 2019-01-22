@@ -8,6 +8,7 @@ Player::Player(bool l, int _hp, double _x, double _y, int a) {
     x = _x;
     y = _y;
     angle = a;
+    block = new CircleBlock(Vec2(_x, _y), PLAYER_SIZE);
 }
 
 void Player::drawPlayer() {
@@ -30,13 +31,19 @@ void Player::drawPlayer() {
     glPopMatrix();
 }
 
-void Player::reset(int _x, int _y){
+void Player::reset(int _x, int _y) {
     hp = 50;
     life = true;
     x = _x;
     y = _y;
     a = 0;
     dx = dy = 0;
+}
+
+void Player::stop() {
+    // dx = dy = 0;
+    a = 0;
+    x -= dx; y -= dy;
 }
 
 void Player::update(GLFWwindow* window) {
@@ -67,6 +74,7 @@ void Player::update(GLFWwindow* window) {
 
     x += dx;
     y += dy;
+    block->update(x, y, block->r);
 
     if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
     if (x <= PLAYER_SIZE) { x = PLAYER_SIZE; }

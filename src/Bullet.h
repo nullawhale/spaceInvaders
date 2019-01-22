@@ -6,6 +6,7 @@
 #include <math.h>
 #include <cstdio>
 #include <vector>
+#include "CircleBlock.h"
 #include "MainConst.h"
 
 class Bullet{
@@ -22,6 +23,7 @@ public:
     int angle;
     int active;
     int hp;
+    CircleBlock* block;
 };
 
 #endif // __BULLET__
