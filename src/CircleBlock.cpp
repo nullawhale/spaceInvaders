@@ -29,7 +29,7 @@ void CircleBlock::drawCircleBlock() {
 }
 
 void CircleBlock::update(double _x, double _y, double _r) {
-    center = Vec2(_x, _y);
+    center = {_x, _y};
     r = _r;
-    
+
 }

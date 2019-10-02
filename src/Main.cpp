@@ -39,12 +39,12 @@ void drawText(int x, int y, char *string) {
 void render() {
     player.drawPlayer();
     player.block->drawCircleBlock();
-    
+
     for (auto &b : bullets) {
         b.draw();
         b.block->drawCircleBlock();
     }
-    
+
     for (auto &bl : blocks) {
         bl->drawCircleBlock();
     }
@@ -73,13 +73,13 @@ int main(int argc, char** argv) {
     glViewport(0, 0, WIDTH_I, HEIGHT_I);
     glOrtho(0, width, height, 0, 0, 1);
 
-    blocks.push_back(new CircleBlock(Vec2(200, 200), 100));
-    blocks.push_back(new CircleBlock(Vec2(400, 350), 30));
+    blocks.push_back(new CircleBlock({200, 200}, 100));
+    blocks.push_back(new CircleBlock({400, 350}, 30));
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
-        
+
         player.update(window);
 
         static int oldState = GLFW_RELEASE;
