@@ -9,7 +9,7 @@ Bullet::Bullet(double p_x, double p_y, int p_angle) {
     angle = p_angle;
     dx = -BULLET_SPEED * sin(p_angle * M_PI / 180);
     dy =  BULLET_SPEED * cos(p_angle * M_PI / 180);
-    block = new CircleBlock(Vec2(p_x, p_y), BULLET_SIZE);
+    block = new CircleBlock({p_x, p_y}, BULLET_SIZE);
 }
 
 void Bullet::draw() {

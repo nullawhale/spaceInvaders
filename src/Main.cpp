@@ -15,8 +15,7 @@
 #include "Block.h"
 #include "CircleBlock.h"
 #include "MainConst.h"
-#include "Vec2.h"
-#include "Vec3.h"
+#include "Vec.h"
 #include "TestCollisions.cpp"
 
 struct map_t map;
@@ -70,8 +69,8 @@ int main(int argc, char** argv) {
     glViewport(0, 0, WIDTH_I, HEIGHT_I);
     glOrtho(0, width, height, 0, 0, 1);
 
-    blocks.push_back(new CircleBlock(Vec2(200, 200), 100));
-    blocks.push_back(new CircleBlock(Vec2(400, 350), 30));
+    blocks.push_back(new CircleBlock({200, 200}, 100));
+    blocks.push_back(new CircleBlock({400, 350}, 30));
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
