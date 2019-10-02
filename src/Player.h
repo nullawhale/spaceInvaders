@@ -6,8 +6,7 @@
 #include <cmath>
 #include <iostream>
 #include "CircleBlock.h"
-#include "Vec2.h"
-#include "Vec3.h"
+#include "Vec.h"
 #include "MainConst.h"
 
 class Player{

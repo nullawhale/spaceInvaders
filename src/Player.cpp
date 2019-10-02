@@ -8,7 +8,7 @@ Player::Player(bool l, int _hp, double _x, double _y, int a) {
     x = _x;
     y = _y;
     angle = a;
-    block = new CircleBlock(Vec2(_x, _y), PLAYER_SIZE);
+    block = new CircleBlock({_x, _y}, PLAYER_SIZE);
 }
 
 void Player::drawPlayer() {
