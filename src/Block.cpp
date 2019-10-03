@@ -1,11 +1,6 @@
 #include "Block.h"
 
-Block::Block() {}
-
-Block::Block(Vec2 _min, Vec2 _max) {
-    min = _min;
-    max = _max;
-}
+Block::Block(Vec2 min, Vec2 max) : min{min}, max{max} {}
 
 void Block::drawBlock() {
     glPushMatrix();
@@ -22,5 +17,5 @@ void Block::drawBlock() {
 }
 
 void Block::update(GLFWwindow* window) {
-    
+
 }

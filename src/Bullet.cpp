@@ -1,16 +1,20 @@
 #include "Bullet.h"
+#include "MainConst.h"
 
-Bullet::Bullet(){}
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
-Bullet::Bullet(double p_x, double p_y, int p_angle) {
-    active = 1;
-    x = p_x;
-    y = p_y;
-    angle = p_angle;
-    dx = -BULLET_SPEED * sin(p_angle * M_PI / 180);
-    dy =  BULLET_SPEED * cos(p_angle * M_PI / 180);
-    block = new CircleBlock({p_x, p_y}, BULLET_SIZE);
-}
+#include <cmath>
+#include <memory>
+
+Bullet::Bullet(double x, double y, int angle) :
+    x{x},
+    y{y},
+    angle{angle},
+    dx{-BULLET_SPEED * std::sin(angle * M_PI / 180)},
+    dy{ BULLET_SPEED * std::cos(angle * M_PI / 180)},
+    active{true},
+    block{std::make_unique<CircleBlock>(Vec2{x, y}, BULLET_SIZE)} {}
 
 void Bullet::draw() {
     glPushMatrix();
@@ -27,13 +31,13 @@ void Bullet::draw() {
 }
 
 void Bullet::update() {
-    if (active == 1) {
+    if (active) {
         x += dx;
         y += dy;
         block->update(x, y, block->r);
     }
 
-    if (active == 1 && (x >= WIDTH_I || x <= 0 || y >= HEIGHT_I || y <= 0)) {
-        active = 0;
+    if (active && (x >= WIDTH_I || x <= 0 || y >= HEIGHT_I || y <= 0)) {
+        active = false;
     }
 }
