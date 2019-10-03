@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
@@ -90,14 +91,10 @@ int main(int argc, char** argv) {
         }
         oldState = newState;
 
-        auto b = std::begin(bullets);
-        while (b != std::end(bullets)) {
-            if ((*b).active == 0) {
-                b = bullets.erase(b);
-            } else {
-                ++b;
-            }
-        }
+        bullets.erase(std::remove_if(std::begin(bullets),
+                                     std::end(bullets),
+                                     [](auto &b) { return !b.active; }),
+                      std::end(bullets));
 
         render();
 
@@ -114,13 +111,8 @@ int main(int argc, char** argv) {
             }
         }
 
-        for (auto it = blocks.begin(); it != blocks.end();) {
-            if ((*it)->active == 0) {
-                it = blocks.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        blocks.erase(std::remove_if(blocks.begin(), blocks.end(), [](auto &b) { return !b.active; }),
+                     blocks.end());
 
         // std::cout << CircleCircle(circle, *player.block) << std::endl;
 
