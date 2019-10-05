@@ -3,16 +3,11 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include "MainConst.h"
 #include "Vec.h"
 
 class Block{
 public:
-    Block();
-    Block(Vec2 _min, Vec2 _max);
+    Block(Vec2 min, Vec2 max);
     void drawBlock();
     void update(GLFWwindow* window);
 

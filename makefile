@@ -13,7 +13,7 @@ OBJ_DIR=obj/
 SRC_DIR=src/
 MKDIRS=$(shell mkdir obj/ out/)
 
-CFLAGS=-c -Wall -std=c++11 -static-libgcc -static-libstdc++
+CFLAGS=-c -Wall -std=c++17 -static-libgcc -static-libstdc++
 SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)Player.cpp $(SRC_DIR)Bullet.cpp \
 	$(SRC_DIR)LoadTexture.cpp $(SRC_DIR)Block.cpp \
 	$(SRC_DIR)CircleBlock.cpp
