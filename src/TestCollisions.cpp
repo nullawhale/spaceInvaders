@@ -9,10 +9,6 @@ bool AABBxAABB(Block a, Block b) {
     return true;
 }
 
-bool CircleCircle(CircleBlock a, CircleBlock b) {
-    if (pow(b.center.x - a.center.x, 2) + 
-        pow(a.center.y - b.center.y, 2) <= pow(a.r + b.r, 2)) {
-        return true;
-    }
-    return false;
+bool CircleCircle(const CircleBlock &a, const CircleBlock &b) {
+    return pow(b.center.x - a.center.x, 2) + pow(a.center.y - b.center.y, 2) <= pow(a.r + b.r, 2);
 }

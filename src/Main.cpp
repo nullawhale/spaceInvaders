@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
@@ -21,7 +22,7 @@
 struct map_t map;
 Player player(true, 50, 15, 15, 0);
 std::vector<Bullet> bullets;
-std::vector<CircleBlock*> blocks;
+std::vector<CircleBlock> blocks;
 // CircleBlock* circle = new CircleBlock(Vec2(200, 200), 100);
 void initGl() {
 
@@ -45,7 +46,7 @@ void render() {
     }
 
     for (auto &bl : blocks) {
-        bl->drawCircleBlock();
+        bl.drawCircleBlock();
     }
 
     auto bulls = std::to_string(bullets.size());
@@ -69,8 +70,8 @@ int main(int argc, char** argv) {
     glViewport(0, 0, WIDTH_I, HEIGHT_I);
     glOrtho(0, width, height, 0, 0, 1);
 
-    blocks.push_back(new CircleBlock({200, 200}, 100));
-    blocks.push_back(new CircleBlock({400, 350}, 30));
+    blocks.emplace_back(Vec2{200, 200}, 100);
+    blocks.emplace_back(Vec2{400, 350}, 30);
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -90,37 +91,28 @@ int main(int argc, char** argv) {
         }
         oldState = newState;
 
-        auto b = std::begin(bullets);
-        while (b != std::end(bullets)) {
-            if ((*b).active == 0) {
-                b = bullets.erase(b);
-            } else {
-                ++b;
-            }
-        }
+        bullets.erase(std::remove_if(std::begin(bullets),
+                                     std::end(bullets),
+                                     [](auto &b) { return !b.active; }),
+                      std::end(bullets));
 
         render();
 
         for (auto &bl : blocks) {
-            if (CircleCircle(*bl, *player.block)) {
+            if (CircleCircle(bl, *player.block)) {
                 player.stop();
             }
             for (auto &b : bullets) {
-                if (CircleCircle(*bl, *b.block)) {
-                    b.active = 0;
-                    if (bl->r <= 5) bl->active = 0;
-                    bl->r -= 1;
+                if (CircleCircle(bl, *b.block)) {
+                    b.active = false;
+                    if (bl.r <= 5) bl.active = false;
+                    bl.r -= 1;
                 }
             }
         }
 
-        for (auto it = blocks.begin(); it != blocks.end();) {
-            if ((*it)->active == 0) {
-                it = blocks.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        blocks.erase(std::remove_if(blocks.begin(), blocks.end(), [](auto &b) { return !b.active; }),
+                     blocks.end());
 
         // std::cout << CircleCircle(circle, *player.block) << std::endl;
 
