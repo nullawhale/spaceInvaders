@@ -9,7 +9,11 @@
 #include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/freeglut.h>
+#endif
 #include "LoadTexture.h"
 #include "Player.h"
 #include "Bullet.h"
