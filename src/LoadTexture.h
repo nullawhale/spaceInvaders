@@ -3,15 +3,21 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <cstdlib>
 #include <cstdio>
 #include "MainConst.h"
 
-struct map_t {
-    GLuint texture;
-    u8* data;
-    char* name;
-};
+class LoadTexture {
+    public:
+        struct map_t {
+            GLuint texture;
+            u8* data;
+            char* name;
+        };
 
-struct map_t LoadTexture(const char* filename);
+        bool initTexture(const char* filename);
+        void bindTexture();
+};
 
 #endif // __LOAD_TEXTURE__

@@ -24,8 +24,8 @@
 #include "TestCollisions.cpp"
 #include "World.h"
 
-// struct map_t map;
-World world(LoadTexture("./map.bmp"));
+//struct map_t map = LoadTexture("./map.bmp");
+//World world(map);
 Player player(true, 50, 15, 15, 0);
 std::vector<Bullet> bullets;
 std::vector<CircleBlock> blocks;
@@ -44,7 +44,11 @@ void drawText(int x, int y, const std::string &text) {
 
 void render() {
 
-    world.drawWorld();
+    // world.drawWorld();
+
+    GLuint texture;
+    texture = LoadTexture("./map.bmp");
+
     player.drawPlayer();
     player.block->drawCircleBlock();
 
