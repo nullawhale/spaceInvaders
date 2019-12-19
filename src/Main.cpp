@@ -22,8 +22,10 @@
 #include "MainConst.h"
 #include "Vec.h"
 #include "TestCollisions.cpp"
+#include "World.h"
 
-struct map_t map;
+// struct map_t map;
+World world(LoadTexture("./map.bmp"));
 Player player(true, 50, 15, 15, 0);
 std::vector<Bullet> bullets;
 std::vector<CircleBlock> blocks;
@@ -41,6 +43,8 @@ void drawText(int x, int y, const std::string &text) {
 }
 
 void render() {
+
+    world.drawWorld();
     player.drawPlayer();
     player.block->drawCircleBlock();
 

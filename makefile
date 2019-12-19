@@ -20,12 +20,12 @@ MKDIRS=$(shell mkdir -p obj/ out/)
 
 SOURCES=$(SRC_DIR)Main.cpp $(SRC_DIR)Player.cpp $(SRC_DIR)Bullet.cpp \
 	$(SRC_DIR)LoadTexture.cpp $(SRC_DIR)Block.cpp \
-	$(SRC_DIR)CircleBlock.cpp
+	$(SRC_DIR)CircleBlock.cpp $(SRC_DIR)World.cpp
 OBJECTS=$(OBJ_DIR)Main.o $(OBJ_DIR)Player.o $(OBJ_DIR)Bullet.o \
 	$(OBJ_DIR)LoadTexture.o $(OBJ_DIR)Block.o \
-	$(OBJ_DIR)CircleBlock.o
+	$(OBJ_DIR)CircleBlock.o $(OBJ_DIR)World.o
 
-all: $(MKDIRS) $(EXECUTABLE) run
+all: $(MKDIRS) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $@ $(LIBS)
