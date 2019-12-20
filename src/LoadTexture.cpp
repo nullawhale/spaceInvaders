@@ -6,8 +6,6 @@
 
 bool LoadTexture::initTexture(const char* filename) {
 
-    struct map_t map;
-    int width, height, nrChannels;
     unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, STBI_rgb_alpha);
 
     if (!data) {
@@ -15,8 +13,8 @@ bool LoadTexture::initTexture(const char* filename) {
         return false;
     }
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &map.texture);
-    glBindTexture(GL_TEXTURE_2D, map.texture);
+    glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     stbi_image_free(data);
 
@@ -30,6 +28,6 @@ bool LoadTexture::initTexture(const char* filename) {
 }
 
 void LoadTexture::bindTexture() {
-    glBindTexture(GL_TEXTURE_2D, map.texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
 }
 

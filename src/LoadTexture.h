@@ -10,11 +10,8 @@
 
 class LoadTexture {
     public:
-        struct map_t {
-            GLuint texture;
-            u8* data;
-            char* name;
-        };
+        GLuint texture;
+        int width, height, nrChannels;
 
         bool initTexture(const char* filename);
         void bindTexture();
