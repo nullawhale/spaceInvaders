@@ -9,4 +9,5 @@ void World::initWorld() {
 }
 
 void World::drawWorld() {
+    tex.bindTexture();
 }
