@@ -7,6 +7,7 @@
 
 class World {
 public:
+    World();
     World(map_t _map);
     void drawWorld();
 
