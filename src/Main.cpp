@@ -60,9 +60,11 @@ void render() {
     auto bulls = std::to_string(bullets.size());
     auto hp = std::to_string(50);
     auto blcks = std::to_string(blocks.size());
-    drawText(100, HEIGHT_I-10, bulls);
-    drawText(150, HEIGHT_I-10, hp);
-    drawText(200, HEIGHT_I-10, blcks);
+    auto accel = std::to_string(player.a);
+    // drawText(100, HEIGHT_I-10, bulls);
+    // drawText(150, HEIGHT_I-10, hp);
+    // drawText(200, HEIGHT_I-10, blcks);
+    drawText(100, HEIGHT_I-10, accel.substr(0, accel.find(",")+3));
 }
 
 int main(int argc, char** argv) {
@@ -119,8 +121,8 @@ int main(int argc, char** argv) {
             }
         }
 
-        blocks.erase(std::remove_if(blocks.begin(), blocks.end(), [](auto &b) { return !b.active; }),
-                     blocks.end());
+        blocks.erase(std::remove_if(blocks.begin(), blocks.end(),[](auto &b) { return !b.active; }),
+            blocks.end());
 
         // std::cout << CircleCircle(circle, *player.block) << std::endl;
 

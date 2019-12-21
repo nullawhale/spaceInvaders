@@ -54,13 +54,15 @@ void Player::update(GLFWwindow* window) {
         angle += ROTATE_SPEED;
     }
     if (glfwGetKey(window, GLFW_KEY_UP)) {
-        if (a < 1) a += 0.1;
+        angle_tmp = angle;
+        if (a < 1) a += 0.05;
         dx = -a * sin(angle * M_PI / 180);
         dy =  a * cos(angle * M_PI / 180);
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN)) {
-        dx = dy = 0;
-        a = 0;
+        if (a > 0) a -= 0.05;
+        dx = -a * sin(angle_tmp * M_PI / 180);
+        dy =  a * cos(angle_tmp * M_PI / 180);
     }
 
     if (hp <= 0) {
