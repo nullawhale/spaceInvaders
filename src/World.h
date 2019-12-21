@@ -7,12 +7,10 @@
 
 class World {
 public:
-    World();
-    // World(map_t);
-    void initWorld();
+    World(map_t _map);
     void drawWorld();
 
-    LoadTexture tex;
+    map_t map;
 };
 
 #endif // __WORLD__

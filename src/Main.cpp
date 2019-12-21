@@ -24,10 +24,12 @@
 #include "TestCollisions.cpp"
 #include "World.h"
 
-World world;
+// struct map_t map;
+World world(LoadTexture("./map.bmp"));
 Player player(true, 50, 15, 15, 0);
 std::vector<Bullet> bullets;
 std::vector<CircleBlock> blocks;
+// CircleBlock* circle = new CircleBlock(Vec2(200, 200), 100);
 void initGl() {
 
 }
@@ -43,7 +45,6 @@ void drawText(int x, int y, const std::string &text) {
 void render() {
 
     world.drawWorld();
-
     player.drawPlayer();
     player.block->drawCircleBlock();
 
@@ -77,7 +78,6 @@ int main(int argc, char** argv) {
     glViewport(0, 0, WIDTH_I, HEIGHT_I);
     glOrtho(0, width, height, 0, 0, 1);
 
-    world.initWorld();
     blocks.emplace_back(Vec2{200, 200}, 100);
     blocks.emplace_back(Vec2{400, 350}, 30);
 
