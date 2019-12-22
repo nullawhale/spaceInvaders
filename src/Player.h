@@ -22,11 +22,14 @@ public:
     double y;
     double dx;
     double dy;
+    double velocity;
     double a; // acceleration
     int angle; // angle
     bool life;
     int hp;
     CircleBlock* block;
+private:
+    int angle_tmp;
 };
 
 #endif // __PLAYER__
