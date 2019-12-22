@@ -30,7 +30,7 @@ std::vector<Bullet> bullets;
 std::vector<CircleBlock> blocks;
 
 void initGl() {
-    world.filename = "./map2.bmp";
+    world.filename = "./map.bmp";
     world.initWorld();
 }
 
