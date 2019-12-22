@@ -2,14 +2,17 @@
 
 World::World(){}
 
-World::World(map_t _map) {
-    map = _map;
+void World::initWorld() {
+    map = LoadTexture(filename);
 }
 
 void World::drawWorld() {
-    glPushMatrix();
+    GLuint texture;
+    texture = map.texture;
 
-    glBindTexture(GL_TEXTURE_2D, map.texture);
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_QUADS);
         glColor3f(1.0, 1.0, 1.0);
         glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0);
@@ -18,5 +21,5 @@ void World::drawWorld() {
         glTexCoord2f(1.0, 0.0); glVertex2f(WIDTH_D, 0.0);
     glEnd();
 
-    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
 }

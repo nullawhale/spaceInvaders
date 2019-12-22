@@ -8,10 +8,11 @@
 class World {
 public:
     World();
-    World(map_t _map);
+
+    void initWorld();
     void drawWorld();
 
-    map_t map;
+    const char* filename;
 };
 
 #endif // __WORLD__

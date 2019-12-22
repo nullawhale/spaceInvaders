@@ -24,14 +24,14 @@
 #include "TestCollisions.cpp"
 #include "World.h"
 
-// struct map_t map;
-World world(LoadTexture("./map.bmp"));
+World world;
 Player player(true, 50, 15, 15, 0);
 std::vector<Bullet> bullets;
 std::vector<CircleBlock> blocks;
-// CircleBlock* circle = new CircleBlock(Vec2(200, 200), 100);
-void initGl() {
 
+void initGl() {
+    world.filename = "./map2.bmp";
+    world.initWorld();
 }
 
 void drawText(int x, int y, const std::string &text) {
@@ -64,7 +64,7 @@ void render() {
     // drawText(100, HEIGHT_I-10, bulls);
     // drawText(150, HEIGHT_I-10, hp);
     // drawText(200, HEIGHT_I-10, blcks);
-    drawText(100, HEIGHT_I-10, accel.substr(0, accel.find(",")+3));
+    //drawText(100, HEIGHT_I-10, accel.substr(0, accel.find(",")+3));
 }
 
 int main(int argc, char** argv) {
@@ -79,6 +79,8 @@ int main(int argc, char** argv) {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, WIDTH_I, HEIGHT_I);
     glOrtho(0, width, height, 0, 0, 1);
+
+    initGl();
 
     blocks.emplace_back(Vec2{200, 200}, 100);
     blocks.emplace_back(Vec2{400, 350}, 30);
