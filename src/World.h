@@ -12,6 +12,7 @@ public:
     void initWorld();
     void drawWorld();
 
+    map_t map;
     const char* filename;
 };
 
