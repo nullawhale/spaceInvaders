@@ -1,4 +1,3 @@
 #!/bin/bash
 
-mkdir build
-cd build && cmake ../.. -G"Ninja" -DCMAKE_BUILD_TYPE=Release && ninja
+mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
