@@ -20,7 +20,7 @@ void Player::drawPlayer() const {
     glRotated(angle, 0, 0, 1);
 
     glBegin(GL_LINE_STRIP);
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
     glVertex3f(-ps, -ps, 0);
     glVertex3f(0, ps, 0);
     glVertex3f(ps, -ps, 0);
