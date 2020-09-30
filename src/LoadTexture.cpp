@@ -26,15 +26,15 @@ struct info_header_t
 #pragma pack(pop)
 
 struct map_t LoadTexture(const char* filename){
-    struct map_t map;
+    struct map_t map{};
     map.name = (char*)filename;
 
     FILE* file = fopen(filename, "rb");
 
-    struct header_t header;
+    struct header_t header{};
     fread(&header, sizeof(header), 1, file);
 
-    struct info_header_t info_header;
+    struct info_header_t info_header{};
     fread(&info_header, sizeof(info_header), 1, file);
 
     map.data = new u8[info_header.size];

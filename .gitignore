@@ -2,9 +2,10 @@
 *.bat
 *.gch
 *.layout
-*.txt
 *.cbp
 *.depend
+.idea/
 bin/
 out/
 obj/
+cmake-build-debug/

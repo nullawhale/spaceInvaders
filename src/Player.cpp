@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() {}
+Player::Player() = default;
 
 Player::Player(bool l, int _hp, double _x, double _y, int a) {
     life = l;
@@ -11,7 +11,7 @@ Player::Player(bool l, int _hp, double _x, double _y, int a) {
     block = new CircleBlock({_x, _y}, PLAYER_SIZE);
 }
 
-void Player::drawPlayer() {
+void Player::drawPlayer() const {
     int ps = PLAYER_SIZE;
 
     glPushMatrix();
@@ -20,12 +20,12 @@ void Player::drawPlayer() {
     glRotated(angle, 0, 0, 1);
 
     glBegin(GL_LINE_STRIP);
-        glColor3f(0.0, 1.0, 0.0);
-        glVertex3f(-ps, -ps, 0);
-        glVertex3f(0, ps, 0);
-        glVertex3f(ps, -ps, 0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(-ps, -ps, 0);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(-ps, -ps, 0);
+    glVertex3f(0, ps, 0);
+    glVertex3f(ps, -ps, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(-ps, -ps, 0);
     glEnd();
 
     glPopMatrix();

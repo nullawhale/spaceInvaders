@@ -1,9 +1,9 @@
-#ifndef __CONSTS__
-#define __CONSTS__
+#ifndef SPACEINVADERS_CONSTANTS_H
+#define SPACEINVADERS_CONSTANTS_H
 
-const double WIDTH_D  = 640.0;
+const double WIDTH_D = 640.0;
 const double HEIGHT_D = 480.0;
-const int WIDTH_I  = 640;
+const int WIDTH_I = 640;
 const int HEIGHT_I = 480;
 
 const int PLAYER_SPEED = 1;
@@ -24,4 +24,4 @@ using u8 = unsigned char;
 using u16 = unsigned short;
 using u32 =  unsigned int;
 
-#endif // __CONSTS__
+#endif //SPACEINVADERS_CONSTANTS_H

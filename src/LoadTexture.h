@@ -1,17 +1,17 @@
-#ifndef __LOAD_TEXTURE__
-#define __LOAD_TEXTURE__
+#ifndef SPACEINVADERS_LOADTEXTURE_H
+#define SPACEINVADERS_LOADTEXTURE_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cstdio>
-#include "MainConst.h"
+#include "Constants.h"
 
 struct map_t {
     GLuint texture;
-    u8* data;
-    char* name;
+    u8 *data;
+    char *name;
 };
 
 struct map_t LoadTexture(const char* filename);
 
-#endif // __LOAD_TEXTURE__
+#endif //SPACEINVADERS_LOADTEXTURE_H

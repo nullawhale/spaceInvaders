@@ -1,5 +1,5 @@
-#ifndef __WORLD__
-#define __WORLD__
+#ifndef SPACEINVADERS_WORLD_H
+#define SPACEINVADERS_WORLD_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -10,10 +10,11 @@ public:
     World();
 
     void initWorld();
-    void drawWorld();
 
-    map_t map;
-    const char* filename;
+    void drawWorld() const;
+
+    map_t map{};
+    const char *filename{};
 };
 
-#endif // __WORLD__
+#endif //SPACEINVADERS_WORLD_H

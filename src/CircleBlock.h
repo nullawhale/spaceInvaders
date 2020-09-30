@@ -1,12 +1,14 @@
-#ifndef __CIRCLEBLOCK__
-#define __CIRCLEBLOCK__
+#ifndef SPACEINVADERS_CIRCLEBLOCK_H
+#define SPACEINVADERS_CIRCLEBLOCK_H
 
 #include "Vec.h"
 
-class CircleBlock{
+class CircleBlock {
 public:
     CircleBlock(Vec2 center, double r);
-    void drawCircleBlock();
+
+    void drawCircleBlock() const;
+
     void update(double _x, double _y, double _r);
 
     Vec2 center;
@@ -14,4 +16,4 @@ public:
     bool active;
 };
 
-#endif // __CIRCLEBLOCK__
+#endif //SPACEINVADERS_CIRCLEBLOCK_H

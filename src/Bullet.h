@@ -1,5 +1,5 @@
-#ifndef __BULLET__
-#define __BULLET__
+#ifndef SPACEINVADERS_BULLET_H
+#define SPACEINVADERS_BULLET_H
 
 #include "CircleBlock.h"
 
@@ -8,7 +8,9 @@
 class Bullet {
 public:
     Bullet(double x, double y, int angle);
-    void draw();
+
+    void draw() const;
+
     void update();
 
     double x;
@@ -17,8 +19,8 @@ public:
     double dx;
     double dy;
     bool active;
-    int hp;
+    int hp{};
     std::unique_ptr<CircleBlock> block;
 };
 
-#endif // __BULLET__
+#endif //SPACEINVADERS_BULLET_H

@@ -1,8 +1,7 @@
 #include "Bullet.h"
-#include "MainConst.h"
+#include "Constants.h"
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <cmath>
 #include <memory>
@@ -16,7 +15,7 @@ Bullet::Bullet(double x, double y, int angle) :
     active{true},
     block{std::make_unique<CircleBlock>(Vec2{x, y}, BULLET_SIZE)} {}
 
-void Bullet::draw() {
+void Bullet::draw() const {
     glPushMatrix();
 
     glTranslated(x, y, 0);
@@ -24,7 +23,7 @@ void Bullet::draw() {
 
     glColor3f(1.0, 0.0, 0.0);
     glBegin(GL_POINTS);
-        glVertex3f(0, 0, 0.0);
+    glVertex3f(0, 0, 0.0);
     glEnd();
 
     glPopMatrix();

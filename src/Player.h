@@ -1,35 +1,39 @@
-#ifndef __PLAYER__
-#define __PLAYER__
+#ifndef SPACEINVADERS_PLAYER_H
+#define SPACEINVADERS_PLAYER_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
 #include "CircleBlock.h"
-#include "Vec.h"
-#include "MainConst.h"
+#include "Constants.h"
 
-class Player{
+class Player {
 public:
     Player();
+
     Player(bool l, int _hp, double _x, double _y, int a);
-    void drawPlayer();
-    void update(GLFWwindow* window);
+
+    void drawPlayer() const;
+
+    void update(GLFWwindow *window);
+
     void stop();
+
     void reset(int _x, int _y);
 
-    double x;
-    double y;
-    double dx;
-    double dy;
-    double velocity;
-    double a; // acceleration
-    int angle; // angle
-    bool life;
-    int hp;
-    CircleBlock* block;
+    double x{};
+    double y{};
+    double dx{};
+    double dy{};
+    double velocity{};
+    double a{}; // acceleration
+    int angle{}; // angle
+    bool life{};
+    int hp{};
+    CircleBlock *block{};
 private:
-    int angle_tmp;
+    int angle_tmp{};
 };
 
-#endif // __PLAYER__
+#endif //SPACEINVADERS_PLAYER_H

@@ -1,27 +1,18 @@
 #include <iostream>
 #include <clocale>
 #include <cstdio>
-#include <cstring>
 #include <vector>
-#include <sstream>
 #include <string>
-#include <cmath>
 #include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
-#include "LoadTexture.h"
+#include "GL/glut.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "Block.h"
 #include "CircleBlock.h"
-#include "MainConst.h"
+#include "Constants.h"
 #include "Vec.h"
-#include "TestCollisions.cpp"
+#include "CheckCollision.h"
 #include "World.h"
 
 World world;
@@ -67,13 +58,22 @@ void render() {
     //drawText(100, HEIGHT_I-10, accel.substr(0, accel.find(",")+3));
 }
 
-int main(int argc, char** argv) {
+void error_callback(int error, const char *description) {
+    fprintf(stderr, "Error (%d): %s\n", error, description);
+}
+
+int main(int argc, char **argv) {
     setlocale(LC_ALL, "");
 
-    GLFWwindow* window;
+    GLFWwindow *window;
     glutInit(&argc, argv);
-    if (!glfwInit()) return -1;
-    window = glfwCreateWindow(WIDTH_I, HEIGHT_I, "Space Invasers", NULL, NULL);
+
+    glfwSetErrorCallback(error_callback);
+    if (!glfwInit()) {
+        std::cerr << "Can't initialize GLFW" << std::endl;
+    }
+
+    window = glfwCreateWindow(WIDTH_I, HEIGHT_I, "Space Invaders", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     int width = WIDTH_I, height = HEIGHT_I;
     glfwGetFramebufferSize(window, &width, &height);
@@ -111,11 +111,11 @@ int main(int argc, char** argv) {
         render();
 
         for (auto &bl : blocks) {
-            if (CircleCircle(bl, *player.block)) {
+            if (CheckCollision::CircleCircle(bl, *player.block)) {
                 player.stop();
             }
             for (auto &b : bullets) {
-                if (CircleCircle(bl, *b.block)) {
+                if (CheckCollision::CircleCircle(bl, *b.block)) {
                     b.active = false;
                     if (bl.r <= 5) bl.active = false;
                     bl.r -= 1;
@@ -123,8 +123,14 @@ int main(int argc, char** argv) {
             }
         }
 
-        blocks.erase(std::remove_if(blocks.begin(), blocks.end(),[](auto &b) { return !b.active; }),
-            blocks.end());
+        blocks.erase(
+                std::remove_if(
+                        blocks.begin(),
+                        blocks.end(),
+                        [](auto &b) {
+                            return !b.active;
+                        }),
+                blocks.end());
 
         // std::cout << CircleCircle(circle, *player.block) << std::endl;
 
