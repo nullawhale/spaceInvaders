@@ -1,0 +1,19 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: install dependencies
+        run: |
+          sudo apt-get install mesa-common-dev -y
+          sudo apt-get install freeglut3-dev -y
+          sudo apt-get install libglfw3-dev -y
+          sudo apt-get install libglew-dev -y
+      - name: Build
+        run: ./buildTest.sh
