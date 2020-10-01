@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 
+Shader::Shader() = default;
+
 std::string readFile(const char *filePath) {
     std::string content;
     std::ifstream fileStream(filePath, std::ios::in);
@@ -25,7 +27,7 @@ std::string readFile(const char *filePath) {
     return content;
 }
 
-GLuint LoadShader(const char *vertex_path, const char *fragment_path) {
+GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
     GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -37,30 +39,27 @@ GLuint LoadShader(const char *vertex_path, const char *fragment_path) {
     GLint result = GL_FALSE;
     int success;
 
-    std::cout << "Compiling vertex shader." << std::endl;
     glShaderSource(vertShader, 1, &vertShaderSrc, nullptr);
     glCompileShader(vertShader);
 
     glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
-    glGetShaderiv(vertShader, GL_INFO_LOG_LENGTH, &success);
-    GLchar infoLog[512];
-    if (!success) {
-        glGetShaderInfoLog(vertShader, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    glGetProgramiv(vertShader, GL_INFO_LOG_LENGTH, &success);
+    GLchar infoLog[GL_INFO_LOG_LENGTH];
+    if (!result) {
+        glGetShaderInfoLog(vertShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    std::cout << "Compiling fragment shader." << std::endl;
     glShaderSource(fragShader, 1, &fragShaderSrc, nullptr);
     glCompileShader(fragShader);
 
     glGetShaderiv(fragShader, GL_COMPILE_STATUS, &result);
-    glGetShaderiv(fragShader, GL_INFO_LOG_LENGTH, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragShader, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    glGetProgramiv(fragShader, GL_INFO_LOG_LENGTH, &success);
+    if (!result) {
+        glGetShaderInfoLog(fragShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    std::cout << "Linking program" << std::endl;
     GLuint program = glCreateProgram();
     glAttachShader(program, vertShader);
     glAttachShader(program, fragShader);
@@ -68,9 +67,13 @@ GLuint LoadShader(const char *vertex_path, const char *fragment_path) {
 
     glGetProgramiv(program, GL_LINK_STATUS, &result);
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &success);
+    if (!result) {
+        glGetShaderInfoLog(fragShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
     std::vector<char> programError((success > 1) ? success : 1);
     glGetProgramInfoLog(program, success, nullptr, &programError[0]);
-    std::cout << &programError[0] << std::endl;
+    std::cerr << &programError[0] << std::endl;
 
     glDeleteShader(vertShader);
     glDeleteShader(fragShader);

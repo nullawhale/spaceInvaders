@@ -3,6 +3,11 @@
 
 #include "GL/glew.h"
 
-GLuint LoadShader(const char *vertex_path, const char *fragment_path);
+class Shader {
+public:
+    Shader();
+
+    static GLuint LoadShader(const char *vertex_path, const char *fragment_path);
+};
 
 #endif //SPACEINVADERS_SHADER_H
