@@ -43,10 +43,9 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
     glCompileShader(vertShader);
 
     glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
-    glGetProgramiv(vertShader, GL_INFO_LOG_LENGTH, &success);
-    GLchar infoLog[GL_INFO_LOG_LENGTH];
+    GLchar infoLog[512];
     if (!result) {
-        glGetShaderInfoLog(vertShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        glGetShaderInfoLog(vertShader, 512, nullptr, infoLog);
         std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
@@ -54,9 +53,8 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
     glCompileShader(fragShader);
 
     glGetShaderiv(fragShader, GL_COMPILE_STATUS, &result);
-    glGetProgramiv(fragShader, GL_INFO_LOG_LENGTH, &success);
     if (!result) {
-        glGetShaderInfoLog(fragShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        glGetShaderInfoLog(fragShader, 512, nullptr, infoLog);
         std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
@@ -66,14 +64,10 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
     glLinkProgram(program);
 
     glGetProgramiv(program, GL_LINK_STATUS, &result);
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &success);
     if (!result) {
-        glGetShaderInfoLog(fragShader, GL_INFO_LOG_LENGTH, nullptr, infoLog);
+        glGetShaderInfoLog(fragShader, 512, nullptr, infoLog);
         std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
-    std::vector<char> programError((success > 1) ? success : 1);
-    glGetProgramInfoLog(program, success, nullptr, &programError[0]);
-    std::cerr << &programError[0] << std::endl;
 
     glDeleteShader(vertShader);
     glDeleteShader(fragShader);
