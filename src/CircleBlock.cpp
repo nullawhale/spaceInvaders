@@ -15,7 +15,7 @@ void CircleBlock::drawCircleBlock() const {
     int num_segments = 50;
 
     glBegin(GL_LINE_LOOP);
-    glColor3f(0.3, 0.4, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
     for (int i = 0; i < num_segments; i++) {
         double angle = 2 * 3.14 * i / num_segments;
         double x = r * std::cos(angle);
