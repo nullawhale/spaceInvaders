@@ -37,16 +37,19 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
     const char *fragShaderSrc = fragShaderStr.c_str();
 
     GLint result = GL_FALSE;
-    int success;
+    GLint infoLogLength;
 
     glShaderSource(vertShader, 1, &vertShaderSrc, nullptr);
     glCompileShader(vertShader);
-
-    glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
-    GLchar infoLog[512];
-    if (!result) {
-        glGetShaderInfoLog(vertShader, 512, nullptr, infoLog);
-        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    {
+        glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
+        if (result == GL_FALSE) {
+            glGetProgramiv(vertShader, GL_INFO_LOG_LENGTH, &infoLogLength);
+            std::string infoLog(infoLogLength, 0);
+            glGetShaderInfoLog(vertShader, infoLogLength, &infoLogLength, infoLog.data());
+            infoLog.resize(infoLogLength);
+            std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        }
     }
 
     glShaderSource(fragShader, 1, &fragShaderSrc, nullptr);
