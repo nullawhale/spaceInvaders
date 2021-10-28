@@ -11,13 +11,6 @@ struct Vec2 {
     double y;
 };
 
-struct Color_t {
-    float r;
-    float g;
-    float b;
-    float a;
-};
-
 struct VAO {
     GLuint VertexArrayID;
     GLuint VertexBuffer;
@@ -74,15 +67,6 @@ struct Vec3 {
         return *this;
     }
 
-    Vec3 Cross(const Vec3 &v) const;
-
-    Vec3 &Normalize();
-
-    void Rotate(float Angle, const Vec3 &Axis);
-
-    void Print() const {
-        printf("(%.02f, %.02f, %.02f", x, y, z);
-    }
 };
 
 

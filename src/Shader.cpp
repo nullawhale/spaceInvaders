@@ -6,8 +6,6 @@
 #include <vector>
 #include <algorithm>
 
-Shader::Shader() = default;
-
 std::string readFile(const char *filePath) {
     std::string content;
     std::ifstream fileStream(filePath, std::ios::in);
@@ -38,6 +36,7 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
 
     GLint result = GL_FALSE;
     GLint infoLogLength;
+    std::string infoLog;
 
     glShaderSource(vertShader, 1, &vertShaderSrc, nullptr);
     glCompileShader(vertShader);
@@ -45,7 +44,6 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
         glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
         if (result == GL_FALSE) {
             glGetProgramiv(vertShader, GL_INFO_LOG_LENGTH, &infoLogLength);
-            std::string infoLog(infoLogLength, 0);
             glGetShaderInfoLog(vertShader, infoLogLength, &infoLogLength, infoLog.data());
             infoLog.resize(infoLogLength);
             std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
@@ -57,7 +55,7 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
 
     glGetShaderiv(fragShader, GL_COMPILE_STATUS, &result);
     if (!result) {
-        glGetShaderInfoLog(fragShader, 512, nullptr, infoLog);
+        glGetShaderInfoLog(fragShader, infoLogLength, &infoLogLength, infoLog.data());
         std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
@@ -68,7 +66,7 @@ GLuint Shader::LoadShader(const char *vertex_path, const char *fragment_path) {
 
     glGetProgramiv(program, GL_LINK_STATUS, &result);
     if (!result) {
-        glGetShaderInfoLog(fragShader, 512, nullptr, infoLog);
+        glGetShaderInfoLog(fragShader, infoLogLength, &infoLogLength, infoLog.data());
         std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
