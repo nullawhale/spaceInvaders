@@ -12,6 +12,6 @@ struct map_t {
     char *name;
 };
 
-struct map_t LoadTexture(const char* filename);
+struct map_t LoadTexture(const char *filename);
 
 #endif //SPACEINVADERS_LOADTEXTURE_H
