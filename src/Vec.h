@@ -2,11 +2,40 @@
 #define SPACEINVADERS_VEC_H
 
 #include <cstdio>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 struct Vec2 {
     double x;
     double y;
 };
+
+struct Color_t {
+    float r;
+    float g;
+    float b;
+    float a;
+};
+
+struct VAO {
+    GLuint VertexArrayID;
+    GLuint VertexBuffer;
+    GLuint ColorBuffer;
+
+    GLenum PrimitiveMode;
+    GLenum FillMode;
+    int NumVertices;
+};
+typedef struct VAO VAO;
+
+struct GLMatrices {
+    glm::mat4 projection;
+    glm::mat4 model;
+    glm::mat4 view;
+    GLuint MatrixID;
+};
+extern GLMatrices Matrices;
 
 struct Vec3 {
     float x{};

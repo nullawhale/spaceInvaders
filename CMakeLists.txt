@@ -14,7 +14,8 @@ add_executable(spaceInvaders
         src/CheckCollision.h src/CheckCollision.cpp
         src/World.h src/World.cpp
         src/Bullet.h src/Bullet.cpp
-        src/Shader.h src/Shader.cpp)
+        src/Shader.h src/Shader.cpp
+        src/Object.h src/Object.cpp)
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)

@@ -5,35 +5,43 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <iostream>
+#include <glm/glm.hpp>
 #include "CircleBlock.h"
 #include "Constants.h"
+#include "Object.h"
 
 class Player {
 public:
     Player();
 
-    Player(bool l, int _hp, double _x, double _y, int a);
+    Player(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3,
+           float dx, float dy, float angle,
+           float r, float g, float b);
 
-    void drawPlayer() const;
+    void create();
 
-    void update(GLFWwindow *window);
+    void draw(glm::mat4 M);
 
-    void stop();
+    void update();
 
-    void reset(int _x, int _y);
+    glm::vec3 get_vertex(int i);
 
-    double x{};
-    double y{};
-    double dx{};
-    double dy{};
-    double velocity{};
-    double a{}; // acceleration
-    int angle{}; // angle
-    bool life{};
-    int hp{};
-    CircleBlock *block{};
+    glm::mat4 get_transform(glm::mat4 M) const;
+
+//    void reset(int _x, int _y);
+
 private:
     int angle_tmp{};
+    glm::vec3 vertices[2]{};
+    VAO *vao{};
+    float x{};
+    float y{};
+    float dx{};
+    float dy{};
+    float angle{};
+    float r{};
+    float g{};
+    float b{};
 };
 
 #endif //SPACEINVADERS_PLAYER_H
