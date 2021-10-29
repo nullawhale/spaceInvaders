@@ -1,60 +1,85 @@
-#include <glm/gtx/transform.hpp>
 #include "Player.h"
 
 Player::Player() = default;
 
-Player::Player(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3,
-               float dx, float dy, float angle,
-               float r, float g, float b) {
-//    this->x = x;
-//    this->y = y;
-    this->r = r;
-    this->g = g;
-    this->b = b;
-    vertices[0] = v2 - v1;
-    vertices[1] = v3 - v1;
-    this->angle = angle;
-    this->dx = dx;
-    this->dy = dy;
-    create();
+Player::Player(bool l, int _hp, double _x, double _y, int a) {
+    life = l;
+    hp = _hp;
+    x = _x;
+    y = _y;
+    angle = a;
+    block = new CircleBlock({_x, _y}, PLAYER_SIZE);
 }
 
-void Player::create() {
-    GLfloat vertex_buffer_data[] = {
-            0, 0, 0,
-            vertices[0][0], vertices[0][1], vertices[0][2],
-            vertices[1][0], vertices[1][1], vertices[1][2]
-    };
+void Player::drawPlayer() const {
+    int ps = PLAYER_SIZE;
 
-    GLfloat color_buffer_data[] = {
-            r, g, b,
-            r, g, b,
-            r, g, b
-    };
-    vao = Object::createObject(GL_TRIANGLES, 3, vertex_buffer_data, color_buffer_data, GL_FILL);
+    glPushMatrix();
+
+    glTranslated(x, y, 0);
+    glRotated(angle, 0, 0, 1);
+
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(-ps, -ps, 0);
+    glVertex3f(0, ps, 0);
+    glVertex3f(ps, -ps, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(-ps, -ps, 0);
+    glEnd();
+
+    glPopMatrix();
 }
 
-void Player::draw(glm::mat4 M) {
-    Matrices.model = glm::mat4(0.5f);
-    glm::mat4 translate = glm::translate(glm::vec3(x, y, 0.0f));
-    Matrices.model *= translate;
-    glm::mat4 MVP = M * Matrices.model;
-    glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-    Object::drawObject(vao);
+void Player::reset(int _x, int _y) {
+    hp = 50;
+    life = true;
+    x = _x;
+    y = _y;
+    a = 0;
+    dx = dy = 0;
 }
 
-void Player::update() {
+void Player::stop() {
+    // dx = dy = 0;
+    a = 0;
+    x -= dx; y -= dy;
+}
+
+void Player::update(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_LEFT)) {
+        angle -= ROTATE_SPEED;
+    }
+    if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
+        angle += ROTATE_SPEED;
+    }
+    if (glfwGetKey(window, GLFW_KEY_UP)) {
+        angle_tmp = angle;
+        if (a < 1) a += 0.05;
+        dx = -a * sin(angle * M_PI / 180);
+        dy =  a * cos(angle * M_PI / 180);
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN)) {
+        if (a > 0) a -= 0.05;
+        dx = -a * sin(angle_tmp * M_PI / 180);
+        dy =  a * cos(angle_tmp * M_PI / 180);
+    }
+
+    if (hp <= 0) {
+        hp = 0;
+        life = false;
+    }
+
+    if (angle >= 360 || angle <= -360) {
+        angle = 0;
+    }
+
     x += dx;
     y += dy;
-}
+    block->update(x, y, block->r);
 
-glm::vec3 Player::get_vertex(int i) {
-    return vertices[i];
-}
-
-glm::mat4 Player::get_transform(glm::mat4 M) const {
-    glm::mat4 translate = glm::translate(glm::vec3(x, y, 0.0f));
-    glm::mat4 rotate = glm::rotate((float) (angle * M_PI / 180.0f), glm::vec3(0, 0, 1));
-    glm::mat4 transform = translate * rotate;
-    return transform * M;
+    if (x >= WIDTH_D - PLAYER_SIZE) { x = WIDTH_D - PLAYER_SIZE; }
+    if (x <= PLAYER_SIZE) { x = PLAYER_SIZE; }
+    if (y >= HEIGHT_D - PLAYER_SIZE) { y = HEIGHT_D - PLAYER_SIZE; }
+    if (y <= PLAYER_SIZE) { y = PLAYER_SIZE; }
 }
