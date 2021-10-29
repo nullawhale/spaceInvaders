@@ -15,6 +15,5 @@ jobs:
           sudo apt-get install freeglut3-dev -y
           sudo apt-get install libglfw3-dev -y
           sudo apt-get install libglew-dev -y
-          sudo apt-get install libglm-dev -y
       - name: Build
         run: ./buildTest.sh

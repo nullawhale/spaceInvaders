@@ -13,14 +13,12 @@ add_executable(spaceInvaders
         src/Block.h src/Block.cpp
         src/CheckCollision.h src/CheckCollision.cpp
         src/World.h src/World.cpp
-        src/Bullet.h src/Bullet.cpp
-        src/Shader.h src/Shader.cpp
-        src/Object.h src/Object.cpp)
+        src/Bullet.h src/Bullet.cpp)
 
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(GLUT REQUIRED)
 find_package(glfw3 REQUIRED)
 
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLFW3_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLFW3_INCLUDE_DIRS})
 
-target_link_libraries(spaceInvaders ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${GLM_LIBRARIES} ${GLFW3_LIBRARY} glfw)
+target_link_libraries(spaceInvaders ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW3_LIBRARY} glfw)

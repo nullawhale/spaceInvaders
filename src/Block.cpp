@@ -20,6 +20,6 @@ void Block::drawBlock() const {
     glPopMatrix();
 }
 
-void Block::update(GLFWwindow *window) {
+void Block::update(GLFWwindow* window) {
 
 }

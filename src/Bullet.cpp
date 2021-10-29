@@ -7,13 +7,13 @@
 #include <memory>
 
 Bullet::Bullet(double x, double y, int angle) :
-        x{x},
-        y{y},
-        angle{angle},
-        dx{-BULLET_SPEED * std::sin(angle * M_PI / 180)},
-        dy{BULLET_SPEED * std::cos(angle * M_PI / 180)},
-        active{true},
-        block{std::make_unique<CircleBlock>(Vec2{x, y}, BULLET_SIZE)} {}
+    x{x},
+    y{y},
+    angle{angle},
+    dx{-BULLET_SPEED * std::sin(angle * M_PI / 180)},
+    dy{ BULLET_SPEED * std::cos(angle * M_PI / 180)},
+    active{true},
+    block{std::make_unique<CircleBlock>(Vec2{x, y}, BULLET_SIZE)} {}
 
 void Bullet::draw() const {
     glPushMatrix();

@@ -22,6 +22,6 @@ const int MAX_ASTEROIDS_ON_SCREEN = 2;
 
 using u8 = unsigned char;
 using u16 = unsigned short;
-using u32 = unsigned int;
+using u32 =  unsigned int;
 
 #endif //SPACEINVADERS_CONSTANTS_H
